@@ -25,9 +25,19 @@ namespace machiavelli {
     const string prompt {"machiavelli> "};
 }
 
+
+/*
+
+Vragen:
+
+Machiavelli namespace - Moet dit constant voor je input staan? En hoe geven we dit door?
+Delegates met command pattern?
+
+*/
+
 static Sync_queue<ClientCommand> queue;
 
-void consume_command() // runs in its own thread
+void consume_command(Game game) // runs in its own thread
 {
     try {
         while (true) {
@@ -36,7 +46,8 @@ void consume_command() // runs in its own thread
 			shared_ptr<Player> player {command.get_player()};
 			try {
 				// TODO handle command here
-				*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
+				//*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
+				game.HandleCommand(client, player, command.get_cmd());
 			} catch (const exception& ex) {
 				cerr << "*** exception in consumer thread for player " << player->get_name() << ": " << ex.what() << '\n';
 				if (client->is_open()) {
@@ -98,12 +109,14 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 int main(int argc, const char * argv[])
 {
+	Game game;
+
     // start command consumer thread
-    thread consumer {consume_command};
+    thread consumer {consume_command, game};
 
     // keep client threads here, so we don't need to detach them
     vector<thread> handlers;
-    
+	
 	// create a server socket
 	ServerSocket server {machiavelli::tcp_port};
 	

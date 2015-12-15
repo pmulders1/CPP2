@@ -149,6 +149,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Socket.h" />
+    <ClInclude Include="SpecialCard.h" />
     <ClInclude Include="Sync_queue.h" />
     <ClInclude Include="throw.h" />
   </ItemGroup>
@@ -160,6 +161,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="SpecialCard.cpp" />
     <ClCompile Include="throw.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
