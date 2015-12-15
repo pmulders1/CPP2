@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="4113328c-d506-4f7c-948e-e5970d36aba1" name="AKD" linkedPackageId="3aab35e8-ad78-4a2b-acb1-a869a53c1a62" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="0cffa6fb-0c7c-475e-8394-fc07f4a3b775">
+      <profileInstance Id="ac97c718-b074-41f7-b537-418cac1de151" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="16986180-131d-4621-8d24-d98a02161329">
+      <profileInstance Id="c7b2dba2-4630-41aa-ae59-0d5103d379b1" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="6a9ee462-e50c-43b7-bead-30ad2ee97a1f" name="Game" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="2c48e256-6b37-43b0-8cc9-064769706ca7" />
+        <suppliersInternal>
+          <dependency Id="4611775a-2ff5-4a98-93a3-a0f57a12add4">
+            <classMoniker Id="bdacda20-a4c5-4384-bece-9ef077129f0b" LastKnownName="Player" />
+            <elementDefinition Id="a5f654ba-e5f4-47ac-92ef-fd1d8966eb89" />
+          </dependency>
+          <dependency Id="8d24da27-5a04-40af-a128-37be9921035f">
+            <classMoniker Id="1bd5f647-890d-4ae9-a1d1-fa5a80d57846" LastKnownName="BasicCard" />
+            <elementDefinition Id="501ab7dd-3d79-407b-b374-d40b9673fbe3" />
+          </dependency>
+        </suppliersInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="bdacda20-a4c5-4384-bece-9ef077129f0b" name="Player" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e8d3dbb0-8205-42b8-9253-6eed4e7b6c56" />
+        <suppliersInternal>
+          <dependency Id="775e6137-6e04-4ffc-bb21-b9666b1108a6">
+            <classMoniker Id="1bd5f647-890d-4ae9-a1d1-fa5a80d57846" LastKnownName="BasicCard" />
+            <elementDefinition Id="801cada6-33e6-4723-81e6-61492c2f4840" />
+          </dependency>
+        </suppliersInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="1bd5f647-890d-4ae9-a1d1-fa5a80d57846" name="BasicCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="d1d370bd-02f8-4ebc-8929-a39e2a959bb0" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="6716e724-3723-435b-ba17-8a395582fee9" name="BuildCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="6d6594dd-f527-474e-8579-b91247a360d5" />
+        <generalsInternal>
+          <generalization Id="1a5cc67a-d07e-43b3-8dfb-34daab3d5de8" isSubstitutable="false">
+            <classMoniker Id="1bd5f647-890d-4ae9-a1d1-fa5a80d57846" LastKnownName="BasicCard" />
+            <elementDefinition Id="8bc7ca76-7631-47be-8edd-1377d2b15edf" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="7ddf8a2f-bf9b-4b1f-a4a0-63a9e5b77733" name="CharacterCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="ee1fde47-9d95-4e4c-a209-a928818c62d9" />
+        <generalsInternal>
+          <generalization Id="a41cbe37-04eb-4ef5-a680-5e1d6636a7df" isSubstitutable="false">
+            <classMoniker Id="1bd5f647-890d-4ae9-a1d1-fa5a80d57846" LastKnownName="BasicCard" />
+            <elementDefinition Id="e01d86a9-0938-464e-add5-19cca4793fe8" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="4ff077c0-ad1d-45a6-8170-43befba5d612" name="SpecialCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="c896bb45-0fce-4c00-a1a4-a8c2151c0c3c" />
+        <generalsInternal>
+          <generalization Id="9bcbaf97-9665-4ba2-9e0a-22b35a31b1a1" isSubstitutable="false">
+            <classMoniker Id="6716e724-3723-435b-ba17-8a395582fee9" LastKnownName="BuildCard" />
+            <elementDefinition Id="f383e275-2917-45c9-b669-4f96f7d91faa" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="3aab35e8-ad78-4a2b-acb1-a869a53c1a62" name="Modelleren">
+    <elementDefinition Id="598bafbf-bdb4-4418-a3e2-d22ebc791fb1" />
+  </package>
+</logicalClassDesignerModel>
