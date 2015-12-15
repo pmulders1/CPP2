@@ -1,8 +1,8 @@
 #include "BasicCard.h"
 
+using namespace std;
 
-
-BasicCard::BasicCard()
+BasicCard::BasicCard(string name, CharacterType type) : name(name), type(type)
 {
 }
 

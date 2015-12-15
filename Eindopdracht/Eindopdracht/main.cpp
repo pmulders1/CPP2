@@ -32,6 +32,7 @@ Vragen:
 
 Machiavelli namespace - Moet dit constant voor je input staan? En hoe geven we dit door?
 Delegates met command pattern?
+Shared of unique ptrs in game.h
 
 */
 

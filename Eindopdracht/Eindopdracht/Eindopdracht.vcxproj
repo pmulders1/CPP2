@@ -145,6 +145,7 @@
     <ClInclude Include="BasicCard.h" />
     <ClInclude Include="BuildCard.h" />
     <ClInclude Include="CharacterCard.h" />
+    <ClInclude Include="CharacterType.h" />
     <ClInclude Include="ClientCommand.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.hpp" />

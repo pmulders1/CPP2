@@ -4,7 +4,7 @@
 class SpecialCard : public BuildCard
 {
 public:
-	SpecialCard();
+	SpecialCard(std::string name, int points, CharacterType type = CharacterType::NONE);
 	~SpecialCard();
 };
 

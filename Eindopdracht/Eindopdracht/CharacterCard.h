@@ -4,7 +4,7 @@
 class CharacterCard : public BasicCard
 {
 public:
-	CharacterCard();
+	CharacterCard(std::string name, CharacterType type = CharacterType::NONE);
 	~CharacterCard();
 };
 
