@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="ac7d4050-9e20-45fa-8ce3-fcbfabd3bab2" name="AKD" linkedPackageId="c952febd-659e-4fd9-8a4d-1b16b4e2d955" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="b4191af2-942d-4186-a231-b14efeffd994">
+      <profileInstance Id="b6b4737d-2d86-45fb-9e6d-2c8445bb6f6d" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="b4f25388-b1ec-4542-9370-3b87712b8251">
+      <profileInstance Id="b118b8c0-656f-4fd2-9da6-436af4123f22" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="df3ba97c-e207-4117-9ae8-c23732843f78" name="Game" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="ac47c51c-22d9-4e9d-ba76-16b3186ae429" />
+        <targetEnds>
+          <association Id="bfd7dd43-f98c-4e05-81ee-1a126c08eb83" isDerived="false" sourceEndRoleName="Game" targetEndRoleName="Player" isLeaf="false" isAbstract="false">
+            <classMoniker Id="698d2749-7fa8-44b6-9412-9369b74fb4fc" LastKnownName="Player" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="bbcdc12d-f7ee-4889-a100-1c53c4b40b3b" name="Game" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="f23788d2-983e-46ad-942e-8629cca00a92" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="b9a42484-98d6-4309-98c3-c89f2eecfb20" name="Player" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="01b427d5-45a5-49da-9dd6-ef8e06d8de58" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="d9ebe5c3-e9e0-4fa4-8774-f109672cac91" />
+          </association>
+        </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="698d2749-7fa8-44b6-9412-9369b74fb4fc" name="Player" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="9cd98f7a-771e-4ec1-be3d-2f0ccf4c16d8" />
+        <targetEnds>
+          <association Id="ccc26d74-761c-48f8-91cf-4b58c1287a67" isDerived="false" sourceEndRoleName="Player" targetEndRoleName="BasicCard" isLeaf="false" isAbstract="false">
+            <classMoniker Id="3d35e243-a920-48f7-8b07-87f545cb9124" LastKnownName="BasicCard" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="0fba210a-8621-47d5-aff8-03e4cbf7a726" name="Player" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="60a296c9-232b-41ce-bf5f-695fc44e6378" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="1507c2b3-bf57-4551-85be-e86353001f32" name="BasicCard" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="7d8d4bd2-9f10-4442-9c94-f2043a124fbb" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="48e86493-4a96-4616-89ca-ea9e123202b7" />
+          </association>
+        </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="3d35e243-a920-48f7-8b07-87f545cb9124" name="BasicCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="f17eb703-bb99-4d1c-95b1-e1ef10acc7d6" />
+        <targetEnds>
+          <association Id="7d06a8eb-6c84-4598-a97f-7338515ddafd" isDerived="false" sourceEndRoleName="BasicCard" targetEndRoleName="Game" isLeaf="false" isAbstract="false">
+            <classMoniker Id="df3ba97c-e207-4117-9ae8-c23732843f78" LastKnownName="Game" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="8e2ddc28-4f5c-4cd7-b40b-c6c39d787dac" name="BasicCard" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="56d00551-5efa-4c8a-ad17-fd7671bb50b3" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="8ee3e6e0-c85e-4f48-8a24-75552358aa24" name="Game" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="88f77c59-e162-45a4-a58f-c2edc7785593" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="c48ba69b-7e33-48bf-a783-af5c7d5c7b89" />
+          </association>
+        </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="21251e6d-045f-46bc-87dc-63cb55701302" name="BuildCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="955a3f92-ae82-4c94-9a2c-8287799351bf" />
+        <generalsInternal>
+          <generalization Id="f7872505-56e6-4c77-8c7a-df827f1445d7" isSubstitutable="false">
+            <classMoniker Id="3d35e243-a920-48f7-8b07-87f545cb9124" LastKnownName="BasicCard" />
+            <elementDefinition Id="9ff2be7d-f6c8-4659-80b6-7754358eacf3" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="ba8c84d0-641e-424b-8d47-bbc5e19fab22" name="CharacterCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="d4fbd9c0-ea39-413b-9d52-4c9fef7af616" />
+        <generalsInternal>
+          <generalization Id="ab55c897-8da5-48c1-91b7-fceabe6473e4" isSubstitutable="false">
+            <classMoniker Id="3d35e243-a920-48f7-8b07-87f545cb9124" LastKnownName="BasicCard" />
+            <elementDefinition Id="c4d30fc3-4712-4e9c-997c-1eeb068c907f" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="d8593d17-551f-4702-b1a7-933144c8695b" name="SpecialCard" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e830cf32-12e1-4bda-ba11-3ecbb5d4ea35" />
+        <generalsInternal>
+          <generalization Id="e55643de-a6bf-4046-a18a-a82b8c6aa125" isSubstitutable="false">
+            <classMoniker Id="21251e6d-045f-46bc-87dc-63cb55701302" LastKnownName="BuildCard" />
+            <elementDefinition Id="e2c62f90-7359-4a97-a5aa-a8e4ffc5ab14" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="c952febd-659e-4fd9-8a4d-1b16b4e2d955" name="Modelleren">
+    <elementDefinition Id="00f4633b-d23b-4c74-92f7-44d9e7ff0e55" />
+  </package>
+</logicalClassDesignerModel>
