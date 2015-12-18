@@ -1,10 +1,22 @@
 #pragma once
 #include "BasicCard.h"
+#include <string>
 
+using namespace std;
 class CharacterCard : public BasicCard
 {
 public:
-	CharacterCard(std::string name, CharacterType type = CharacterType::NONE);
+	CharacterCard(string name, string description, CharacterType type = CharacterType::NONE);
+	
+	virtual string print() const {
+		return this->get_name() + ": " + this->get_description() + "\r\n";
+	}
+
+	string get_description() const { return this->description; }
+	void set_description(const string& description) { this->description = description; }
+
 	~CharacterCard();
+private:
+	string description;
 };
 

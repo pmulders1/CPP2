@@ -1,15 +1,19 @@
 #include "Game.h"
+#include <algorithm>
+#include <cstdlib>
+#include <string> 
+#include <ctime>
 
 Game::Game()
 {
-	shared_ptr<BasicCard> assasin(new CharacterCard("Assasin", CharacterType::ASSASSIN));
-	shared_ptr<BasicCard> thief(new CharacterCard("Thief", CharacterType::THIEF));
-	shared_ptr<BasicCard> magician(new CharacterCard("Magician", CharacterType::MAGICIAN));
-	shared_ptr<BasicCard> king(new CharacterCard("King", CharacterType::KING));
-	shared_ptr<BasicCard> bishop(new CharacterCard("Bishop", CharacterType::BISHOP));
-	shared_ptr<BasicCard> merchant(new CharacterCard("Merchant", CharacterType::MERCHANT));
-	shared_ptr<BasicCard> architect(new CharacterCard("Architect", CharacterType::ARCHITECT));
-	shared_ptr<BasicCard> warlord(new CharacterCard("Warlord", CharacterType::WARLORD));
+	shared_ptr<BasicCard> assasin(new CharacterCard("Assasin", "Kill any other character.", CharacterType::ASSASSIN));
+	shared_ptr<BasicCard> thief(new CharacterCard("Thief", "Steal gold from another player.", CharacterType::THIEF));
+	shared_ptr<BasicCard> magician(new CharacterCard("Magician", "Trade all your buildcards with all buildcards of anoher player.", CharacterType::MAGICIAN));
+	shared_ptr<BasicCard> king(new CharacterCard("King", "Start next round, Recieves gold from monuments.", CharacterType::KING));
+	shared_ptr<BasicCard> bishop(new CharacterCard("Bishop", "Is protected against the Warlord, Recieves gold from church buildings.", CharacterType::BISHOP));
+	shared_ptr<BasicCard> merchant(new CharacterCard("Merchant", "Recieves one extra gold, Recieves gold from commercial buildings.", CharacterType::MERCHANT));
+	shared_ptr<BasicCard> architect(new CharacterCard("Architect", "Draws 2 extra building cards, Can build up to 3 buildings in one turn.", CharacterType::ARCHITECT));
+	shared_ptr<BasicCard> warlord(new CharacterCard("Warlord", "Destroy any building, Recieves gold from military buildings.", CharacterType::WARLORD));
 	charactersDeck.push_back(assasin);
 	charactersDeck.push_back(thief);
 	charactersDeck.push_back(magician);
@@ -79,19 +83,112 @@ Game::Game()
 	buildingsDeck.push_back(university);
 }
 
+
 void Game::HandleCommand(shared_ptr<Socket> client, shared_ptr<Player> player, string command) {
-	if (command == "Join") {
+	transform(command.begin(), command.end(), command.begin(), ::tolower);
+	if (command == "join") {
 		this->JoinPlayer(player, client);
+	} else if (command == "start-game") {
+		this->StartGame(player, client);
+		this->CharacterSelection(player, client);
+	} else if (command == "help") {
+		this->Help(player, client);
 	}
 }
 
+void Game::StartGame(shared_ptr<Player> player, shared_ptr<Socket> client) {
+
+	if (players.size() >= 2 && !started) {
+		this->started = true;
+
+		srand(time(0));
+		random_shuffle(buildingsDeck.begin(), buildingsDeck.end());
+		random_shuffle(charactersDeck.begin(), charactersDeck.end());
+
+		for (size_t i = 0; i < players.size(); i++)
+		{
+			*players[i].second << "Game has started. Good luck!\r\n" << m.prompt;
+			players[i].first->set_coins(2);
+
+			for (int j = 0; j < 4; j++){
+				players[i].first->set_buildingCard(buildingsDeck[0]);
+				buildingsDeck.erase(buildingsDeck.begin());
+			}
+		}
+		players[0].first->set_isKing(true);
+		*players[0].second << "You are the King. You may start the game.\r\n" << m.prompt;
+	} else if(players.size() == 0){
+		*client << "You must join first before you can start a game.\r\n" << m.prompt;
+	} else if (started) {
+		*client << "Game already started.\r\n" << m.prompt;
+	} else {
+		*client << "Not enough players to start a game.\r\n" << m.prompt;
+	}
+}
+
+void Game::CharacterSelection(shared_ptr<Player> player, shared_ptr<Socket> client) {
+	if(!this->started){
+		*client << "Invalid command. Game has not started yet. Try the start-game command to start the game.\r\n" << m.prompt;
+		return;
+	}
+	*players[0].second << "The following card will be placed face down on the table: \r\n" << m.prompt;
+	*players[0].second << charactersDeck[0]->print() << "\r\n" << m.prompt;
+	ontabledeck.push_back(make_pair(false, move(charactersDeck[0])));
+	charactersDeck.erase(charactersDeck.begin());
+	
+	// iedere speler kan 2 kaarten pakken.
+	for (size_t i = 0; i < players.size() * 2; i++) {
+		int index = i;
+		if (index >= players.size()) {
+			index = index - players.size();
+		}
+		bool valid = false;
+		while (!valid) {
+			*players[index].second << "Choose one of the following Character cards:\r\n\r\n" << m.prompt;
+			for (size_t j = 0; j < charactersDeck.size(); j++)
+			{
+				*players[index].second << to_string(j) << ". " << charactersDeck[j]->print() << m.prompt;
+			}
+			*players[index].second << "Select a card by number: \r\n" << m.prompt;
+			string temp{ players[index].second->readline() };
+
+			try {
+				int cardnr = atoi(temp.c_str());
+				players[index].first->set_characterCard(charactersDeck[cardnr]);
+				charactersDeck.erase(charactersDeck.begin() + cardnr);
+				valid = true;
+			}
+			catch (exception e) {
+				*players[index].second << "Invalid input. Select a card by number!\r\n" << m.prompt;
+				valid = false;
+			}
+		}
+	}
+}
+
+void Game::Help(shared_ptr<Player> player, shared_ptr<Socket> client) {
+	*client << "Game turn:\r\n" << m.prompt;
+	*client << "Income: Take 2 gold pieces or take 2 build cards and put 1 back.\r\n" << m.prompt;
+	*client << "Building: Place one build card on your playfield and pay the amount of gold required to the bank.\r\n" << m.prompt;
+	*client << "Character Specialty: You can activate your characters special ability at any time.\r\n\r\n" << m.prompt;
+
+	*client << "Characters:\r\n" << m.prompt;
+	*client << "1. Assasin: Kill any other character.\r\n" << m.prompt;
+	*client << "2. Thief: Steal gold from another player.\r\n" << m.prompt;
+	*client << "3. Magician: Trade all your buildcards with another all buildcards of anoher player.\r\n" << m.prompt;
+	*client << "4. King: Start next round, Recieves gold from monuments.\r\n" << m.prompt;
+	*client << "5. Pedo: Is protected against the Warlord, Recieves gold from church buildings.\r\n" << m.prompt;
+	*client << "6. Merchant: Recieves one extra gold, Recieves gold from commercial buildings.\r\n" << m.prompt;
+	*client << "7. Architect: Draws 2 extra building cards, Can build up to 3 buildings in one turn.\r\n" << m.prompt;
+	*client << "8. Warlord: Destroy any building, Recieves gold from military buildings.\r\n" << m.prompt;
+}
+
 void Game::JoinPlayer(shared_ptr<Player> player, shared_ptr<Socket> client) {
-	// Move constructor
 	this->players.push_back(make_pair(player, client));
 
 	for (size_t i = 0; i < players.size(); i++)
 	{
-		*players[i].second << player->get_name() << " has joined the game";
+		*players[i].second << player->get_name() << " has joined the game\r\n" << m.prompt;
 	}
 }
 

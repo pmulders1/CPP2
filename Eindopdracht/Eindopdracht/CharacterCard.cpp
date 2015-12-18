@@ -2,7 +2,7 @@
 
 using namespace std;
 
-CharacterCard::CharacterCard(string name, CharacterType type) : BasicCard(name, type)
+CharacterCard::CharacterCard(string name, string description, CharacterType type) : BasicCard(name, type), description(description)
 {
 }
 

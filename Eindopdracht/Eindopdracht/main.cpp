@@ -20,19 +20,9 @@ using namespace std;
 #include "Player.hpp"
 #include "Game.h"
 
-namespace machiavelli {
-    const int tcp_port {1080};
-    const string prompt {"machiavelli> "};
-}
-
-
 /*
 
 Vragen:
-
-Machiavelli namespace - Moet dit constant voor je input staan? En hoe geven we dit door?
-Delegates met command pattern?
-Shared of unique ptrs in game.h
 
 */
 
@@ -68,13 +58,14 @@ void consume_command(Game game) // runs in its own thread
 
 void handle_client(shared_ptr<Socket> client) // this function runs in a separate thread
 {
+	machiavelli m;
     try {
-        client->write("Welcome to Server 1.0! To quit, type 'quit'.\r\n");
+		*client << "Welcome to Server 1.0! To quit, type 'quit'.\r\n" << m.prompt;
 		client->write("What's your name?\r\n");
-        client->write(machiavelli::prompt);
+        client->write(m.prompt);
 		string name {client->readline()};
 		shared_ptr<Player> player {new Player {name}};
-		*client << "Welcome, " << name << ", have fun playing our game!\r\n" << machiavelli::prompt;
+		*client << "Welcome, " << name << ", have fun playing our game!\r\n" << m.prompt;
 
         while (true) { // game loop
             try {
@@ -110,6 +101,7 @@ void handle_client(shared_ptr<Socket> client) // this function runs in a separat
 
 int main(int argc, const char * argv[])
 {
+	machiavelli m;
 	Game game;
 
     // start command consumer thread
@@ -119,7 +111,7 @@ int main(int argc, const char * argv[])
     vector<thread> handlers;
 	
 	// create a server socket
-	ServerSocket server {machiavelli::tcp_port};
+	ServerSocket server {m.tcp_port};
 	
 	while (true) {
 		try {
