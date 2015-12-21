@@ -31,6 +31,11 @@ public:
 	void CharacterSelection2P(shared_ptr<Player> player, shared_ptr<Socket> client);
 	void CharacterSelection3P(shared_ptr<Player> player, shared_ptr<Socket> client);
 	void Help(shared_ptr<Player> player, shared_ptr<Socket> client);
+	
+	// Gamefuncties
+	void ShowBoard();
+	void AddNewGold(int amount);
+	void DrawCards();
 
 	bool FindPlayer(CharacterType type);
 	void PlayTurn(CharacterType type);

@@ -33,10 +33,11 @@ public:
 	void set_isKing(const bool isKing) { this->isKing = isKing; }
 
 	void set_buildingCard(shared_ptr<BasicCard> card) { buildingCards.push_back(move(card)); }
-	void set_characterCard(shared_ptr<BasicCard> card) { characterCards.push_back(move(card)); }
+	void set_characterCard(bool val, shared_ptr<BasicCard> card) { characterCards.push_back(make_pair(val, move(card))); }
 
 	vector<shared_ptr<BasicCard>> buildingCards;
-	vector<shared_ptr<BasicCard>> characterCards;
+	vector<pair<bool, shared_ptr<BasicCard>>> characterCards;
+	vector<shared_ptr<BasicCard>> playedCards;
 
 private:
 	string name;
