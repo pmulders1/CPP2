@@ -28,9 +28,13 @@ public:
 	void HandleCommand(shared_ptr<Socket> client, shared_ptr<Player> player, string command);
 	void JoinPlayer(shared_ptr<Player> player, shared_ptr<Socket> client);
 	void StartGame(shared_ptr<Player> player, shared_ptr<Socket> client);
-	void CharacterSelection(shared_ptr<Player> player, shared_ptr<Socket> client);
+	void CharacterSelection2P(shared_ptr<Player> player, shared_ptr<Socket> client);
+	void CharacterSelection3P(shared_ptr<Player> player, shared_ptr<Socket> client);
 	void Help(shared_ptr<Player> player, shared_ptr<Socket> client);
 
+	bool FindPlayer(CharacterType type);
+	void PlayTurn(CharacterType type);
+	
 	vector<pair<shared_ptr<Player>, shared_ptr<Socket>>> players;
 	
 	vector<pair<bool, shared_ptr<BasicCard>>> ontabledeck;
@@ -38,5 +42,7 @@ public:
 	vector<shared_ptr<BasicCard>> charactersDeck;
 
 	~Game();
+private:
+	int currentPlayer;
 };
 

@@ -6,6 +6,9 @@ BuildCard::BuildCard(string name, int points, CharacterType type) : BasicCard(na
 {
 }
 
+bool BuildCard::CheckType(CharacterType type) {
+	return this->get_type() == type;
+}
 
 BuildCard::~BuildCard()
 {

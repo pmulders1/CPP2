@@ -11,10 +11,10 @@ public:
 	virtual string print() const {
 		return this->get_name() + ": " + this->get_description() + "\r\n";
 	}
-
+	virtual string printCost() const { return ""; }
 	string get_description() const { return this->description; }
 	void set_description(const string& description) { this->description = description; }
-
+	virtual bool CheckType(CharacterType type);
 	~CharacterCard();
 private:
 	string description;

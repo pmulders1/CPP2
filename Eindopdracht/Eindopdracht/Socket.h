@@ -59,7 +59,7 @@ public:
 	void write(const std::string& msg) const;
 	void write(const char *buf, size_t len) const;
     void write(char c) const;
-	
+
 	const Socket& operator<<(const char c) const;
 	const Socket& operator<<(const char* message) const;
 	const Socket& operator<<(const std::string& message) const;

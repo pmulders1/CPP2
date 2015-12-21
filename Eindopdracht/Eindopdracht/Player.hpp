@@ -35,9 +35,10 @@ public:
 	void set_buildingCard(shared_ptr<BasicCard> card) { buildingCards.push_back(move(card)); }
 	void set_characterCard(shared_ptr<BasicCard> card) { characterCards.push_back(move(card)); }
 
-private:
 	vector<shared_ptr<BasicCard>> buildingCards;
 	vector<shared_ptr<BasicCard>> characterCards;
+
+private:
 	string name;
 	int points = 0;
 	int coins = 0;

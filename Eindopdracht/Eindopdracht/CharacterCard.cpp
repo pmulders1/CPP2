@@ -6,6 +6,9 @@ CharacterCard::CharacterCard(string name, string description, CharacterType type
 {
 }
 
+bool CharacterCard::CheckType(CharacterType type) {
+	return this->get_type() == type;
+}
 
 CharacterCard::~CharacterCard()
 {

@@ -83,6 +83,20 @@ Game::Game()
 	buildingsDeck.push_back(university);
 }
 
+bool Game::FindPlayer(CharacterType type) {
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		for (size_t j = 0; j < players[i].first->characterCards.size(); j++)
+		{
+			if (players[i].first->characterCards[j]->CheckType(type)) {
+				currentPlayer = i;
+				return true;
+				break;
+			}
+		}
+	}
+	return false;
+}
 
 void Game::HandleCommand(shared_ptr<Socket> client, shared_ptr<Player> player, string command) {
 	transform(command.begin(), command.end(), command.begin(), ::tolower);
@@ -90,10 +104,40 @@ void Game::HandleCommand(shared_ptr<Socket> client, shared_ptr<Player> player, s
 		this->JoinPlayer(player, client);
 	} else if (command == "start-game") {
 		this->StartGame(player, client);
-		this->CharacterSelection(player, client);
+		if(players.size() == 2){
+			this->CharacterSelection2P(player, client);
+		}
+		if (players.size() == 3) {
+			this->CharacterSelection3P(player, client);
+		}
+
+		for (int i = 1; i <= CharacterType::WARLORD; i++)
+		{
+			if (this->FindPlayer((CharacterType)i)) {
+				this->PlayTurn((CharacterType)i);
+			}
+		}
+
 	} else if (command == "help") {
 		this->Help(player, client);
 	}
+}
+
+void Game::PlayTurn(CharacterType type) {
+	*players[currentPlayer].second << "\u001B[2J";
+	*players[currentPlayer].second << "You are playing as: " << ToString(type) << "\r\n";
+	*players[currentPlayer].second << "Gold: " << to_string(players[currentPlayer].first->get_coins()) << "\r\n";
+	*players[currentPlayer].second << "Buildings: \r\n";
+	for (size_t i = 0; i < players[currentPlayer].first->buildingCards.size(); i++)
+	{
+		*players[currentPlayer].second << " " << players[currentPlayer].first->buildingCards[i]->get_name() << "(" << ToString(players[currentPlayer].first->buildingCards[i]->get_type()) << ", " << players[currentPlayer].first->buildingCards[i]->printCost() << "):\r\n";
+	}
+	*players[currentPlayer].second << "Cards in hand: \r\n" << m.prompt;
+	for (size_t i = 0; i < players[currentPlayer].first->buildingCards.size(); i++)
+	{
+		*players[currentPlayer].second << " " << players[currentPlayer].first->buildingCards[i]->get_name() << "(" << ToString(players[currentPlayer].first->buildingCards[i]->get_type()) << ", " << players[currentPlayer].first->buildingCards[i]->printCost() << "):\r\n";
+	}
+	string temp{ players[currentPlayer].second->readline() };
 }
 
 void Game::StartGame(shared_ptr<Player> player, shared_ptr<Socket> client) {
@@ -126,7 +170,7 @@ void Game::StartGame(shared_ptr<Player> player, shared_ptr<Socket> client) {
 	}
 }
 
-void Game::CharacterSelection(shared_ptr<Player> player, shared_ptr<Socket> client) {
+void Game::CharacterSelection2P(shared_ptr<Player> player, shared_ptr<Socket> client) {
 	if(!this->started){
 		*client << "Invalid command. Game has not started yet. Try the start-game command to start the game.\r\n" << m.prompt;
 		return;
@@ -136,34 +180,112 @@ void Game::CharacterSelection(shared_ptr<Player> player, shared_ptr<Socket> clie
 	ontabledeck.push_back(make_pair(false, move(charactersDeck[0])));
 	charactersDeck.erase(charactersDeck.begin());
 	
+	bool first = true;
+
 	// iedere speler kan 2 kaarten pakken.
 	for (size_t i = 0; i < players.size() * 2; i++) {
-		int index = i;
-		if (index >= players.size()) {
-			index = index - players.size();
+		currentPlayer = i;
+		if (currentPlayer >= players.size()) {
+			currentPlayer = currentPlayer - players.size();
 		}
 		bool valid = false;
 		while (!valid) {
-			*players[index].second << "Choose one of the following Character cards:\r\n\r\n" << m.prompt;
+			*players[currentPlayer].second << "Choose one of the following Character cards:\r\n\r\n" << m.prompt;
 			for (size_t j = 0; j < charactersDeck.size(); j++)
 			{
-				*players[index].second << to_string(j) << ". " << charactersDeck[j]->print() << m.prompt;
+				*players[currentPlayer].second << to_string(j) << ". " << charactersDeck[j]->print() << m.prompt;
 			}
-			*players[index].second << "Select a card by number: \r\n" << m.prompt;
-			string temp{ players[index].second->readline() };
-
+			*players[currentPlayer].second << "Select a card by number: \r\n" << m.prompt;
+			string temp{ players[currentPlayer].second->readline() };
+			
 			try {
 				int cardnr = atoi(temp.c_str());
-				players[index].first->set_characterCard(charactersDeck[cardnr]);
+				if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
+					throw exception();
+				}
+				players[currentPlayer].first->set_characterCard(charactersDeck[cardnr]);
 				charactersDeck.erase(charactersDeck.begin() + cardnr);
 				valid = true;
 			}
 			catch (exception e) {
-				*players[index].second << "Invalid input. Select a card by number!\r\n" << m.prompt;
+				*players[currentPlayer].second << "Invalid input. Select a card by number!\r\n" << m.prompt;
+				valid = false;
+			}
+		}
+		if (!first) {
+			bool valid = false;
+			while (!valid) {
+				*players[currentPlayer].second << "\r\nChoose one of the following Character cards to lay down:\r\n\r\n" << m.prompt;
+				for (size_t j = 0; j < charactersDeck.size(); j++)
+				{
+					*players[currentPlayer].second << to_string(j) << ". " << charactersDeck[j]->print() << m.prompt;
+				}
+				*players[currentPlayer].second << "Select a card by number: \r\n" << m.prompt;
+				string temp{ players[currentPlayer].second->readline() };
+
+				try {
+					int cardnr = atoi(temp.c_str());
+					if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
+						throw exception();
+					}
+					ontabledeck.push_back(make_pair(false, move(charactersDeck[cardnr])));
+					charactersDeck.erase(charactersDeck.begin() + cardnr);
+					valid = true;
+				}
+				catch (exception e) {
+					*players[currentPlayer].second << "Invalid input. Select a card by number!\r\n" << m.prompt;
+					valid = false;
+				}
+			}
+		}
+		first = false;
+	}
+}
+
+void Game::CharacterSelection3P(shared_ptr<Player> player, shared_ptr<Socket> client) {
+	if (!this->started) {
+		*client << "Invalid command. Game has not started yet. Try the start-game command to start the game.\r\n" << m.prompt;
+		return;
+	}
+	*players[0].second << "The following card will be placed face down on the table: \r\n" << m.prompt;
+	*players[0].second << charactersDeck[0]->print() << "\r\n" << m.prompt;
+	ontabledeck.push_back(make_pair(false, move(charactersDeck[0])));
+	charactersDeck.erase(charactersDeck.begin());
+
+	// iedere speler kan 2 kaarten pakken.
+	for (size_t i = 0; i < players.size() * 2; i++) {
+		currentPlayer = i;
+		if (currentPlayer >= players.size()) {
+			currentPlayer = currentPlayer - players.size();
+		}
+		bool valid = false;
+		while (!valid) {
+			*players[currentPlayer].second << "Choose one of the following Character cards:\r\n\r\n" << m.prompt;
+			for (size_t j = 0; j < charactersDeck.size(); j++)
+			{
+				*players[currentPlayer].second << to_string(j) << ". " << charactersDeck[j]->print() << m.prompt;
+			}
+			*players[currentPlayer].second << "Select a card by number: \r\n" << m.prompt;
+			string temp{ players[currentPlayer].second->readline() };
+
+			try {
+				int cardnr = atoi(temp.c_str());
+				if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
+					throw exception();
+				}
+				players[currentPlayer].first->set_characterCard(charactersDeck[cardnr]);
+				charactersDeck.erase(charactersDeck.begin() + cardnr);
+				valid = true;
+			}
+			catch (exception e) {
+				*players[currentPlayer].second << "Invalid input. Select a card by number!\r\n" << m.prompt;
 				valid = false;
 			}
 		}
 	}
+
+	ontabledeck.push_back(make_pair(false, move(charactersDeck[0])));
+	charactersDeck.erase(charactersDeck.begin());
 }
 
 void Game::Help(shared_ptr<Player> player, shared_ptr<Socket> client) {

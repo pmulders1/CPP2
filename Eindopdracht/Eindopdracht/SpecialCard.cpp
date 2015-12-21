@@ -6,6 +6,9 @@ SpecialCard::SpecialCard(string name, int points, CharacterType type) : BuildCar
 {
 }
 
+bool SpecialCard::CheckType(CharacterType type) {
+	return this->get_type() == type;
+}
 
 SpecialCard::~SpecialCard()
 {
