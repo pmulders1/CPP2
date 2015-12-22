@@ -142,46 +142,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ArchitectAction.h" />
-    <ClInclude Include="AssasinAction.h" />
-    <ClInclude Include="BaseAction.h" />
+    <ClInclude Include="ArchitectCard.h" />
+    <ClInclude Include="AssasinCard.h" />
     <ClInclude Include="BasicCard.h" />
-    <ClInclude Include="BishopAction.h" />
-    <ClInclude Include="BuildCard.h" />
+    <ClInclude Include="BishopCard.h" />
+    <ClInclude Include="BuildingCard.h" />
     <ClInclude Include="CharacterCard.h" />
     <ClInclude Include="CharacterType.h" />
     <ClInclude Include="ClientCommand.h" />
+    <ClInclude Include="CourtOfMiraclesCard.h" />
+    <ClInclude Include="Deck.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="KingAction.h" />
-    <ClInclude Include="MagicianAction.h" />
-    <ClInclude Include="MerchantAction.h" />
+    <ClInclude Include="KingCard.h" />
+    <ClInclude Include="MagicianCard.h" />
+    <ClInclude Include="MerchantCard.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Socket.h" />
-    <ClInclude Include="SpecialCard.h" />
     <ClInclude Include="Sync_queue.h" />
-    <ClInclude Include="TheifAction.h" />
+    <ClInclude Include="ThiefCard.h" />
     <ClInclude Include="throw.h" />
-    <ClInclude Include="WarlordAction.h" />
+    <ClInclude Include="WarlordCard.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ArchitectAction.cpp" />
-    <ClCompile Include="AssasinAction.cpp" />
-    <ClCompile Include="BaseAction.cpp" />
+    <ClCompile Include="ArchitectCard.cpp" />
+    <ClCompile Include="AssasinCard.cpp" />
     <ClCompile Include="BasicCard.cpp" />
-    <ClCompile Include="BishopAction.cpp" />
-    <ClCompile Include="BuildCard.cpp" />
+    <ClCompile Include="BishopCard.cpp" />
+    <ClCompile Include="BuildingCard.cpp" />
     <ClCompile Include="CharacterCard.cpp" />
+    <ClCompile Include="CourtOfMiraclesCard.cpp" />
+    <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="KingAction.cpp" />
-    <ClCompile Include="MagicianAction.cpp" />
+    <ClCompile Include="KingCard.cpp" />
+    <ClCompile Include="MagicianCard.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MerchantAction.cpp" />
+    <ClCompile Include="MerchantCard.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="SpecialCard.cpp" />
-    <ClCompile Include="TheifAction.cpp" />
+    <ClCompile Include="ThiefCard.cpp" />
     <ClCompile Include="throw.cpp" />
-    <ClCompile Include="WarlordAction.cpp" />
+    <ClCompile Include="WarlordCard.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

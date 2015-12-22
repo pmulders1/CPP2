@@ -13,11 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\CharacterActions">
-      <UniqueIdentifier>{f765bef8-f5ef-488c-b3cb-1107bd5b2921}</UniqueIdentifier>
+    <Filter Include="Source Files\Cards">
+      <UniqueIdentifier>{fa9e112d-ff63-49da-ba14-a193e490179f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\CharacterActions">
-      <UniqueIdentifier>{f1d7c13b-1c75-49cf-9fc9-de41f399393f}</UniqueIdentifier>
+    <Filter Include="Header Files\Cards">
+      <UniqueIdentifier>{69e7f7d2-a24f-41bd-8ad1-77205d8dea96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cards\Characters">
+      <UniqueIdentifier>{474a82a7-28b6-4577-90fd-cfcc574f309b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cards\Buildings">
+      <UniqueIdentifier>{2711fc12-dbe0-48c1-aad1-8a14df58031d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cards\Characters">
+      <UniqueIdentifier>{1eb54256-0e0f-4036-afa3-573a79c722d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cards\Buildings">
+      <UniqueIdentifier>{65daf92a-4099-4555-92eb-44cfb8cff82b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -39,47 +51,47 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Deck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="BasicCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BuildCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterCard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpecialCard.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cards</Filter>
     </ClInclude>
     <ClInclude Include="CharacterType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="ArchitectCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="AssasinAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="AssasinCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="WarlordAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="BishopCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="ArchitectAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="CharacterCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="MerchantAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="KingCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="BishopAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="MagicianCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="MagicianAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="MerchantCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="KingAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="ThiefCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="TheifAction.h">
-      <Filter>Header Files\CharacterActions</Filter>
+    <ClInclude Include="WarlordCard.h">
+      <Filter>Header Files\Cards\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingCard.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="CourtOfMiraclesCard.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -98,44 +110,44 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BasicCard.cpp">
+    <ClCompile Include="Deck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BuildCard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="BasicCard.cpp">
+      <Filter>Source Files\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="WarlordCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="ArchitectCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="AssasinCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="BishopCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
     </ClCompile>
     <ClCompile Include="CharacterCard.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Cards\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="SpecialCard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="KingCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="BaseAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
+    <ClCompile Include="MagicianCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="AssasinAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
+    <ClCompile Include="MerchantCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="ArchitectAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
+    <ClCompile Include="ThiefCard.cpp">
+      <Filter>Source Files\Cards\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="BishopAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
+    <ClCompile Include="BuildingCard.cpp">
+      <Filter>Source Files\Cards\Buildings</Filter>
     </ClCompile>
-    <ClCompile Include="KingAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
-    </ClCompile>
-    <ClCompile Include="MagicianAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
-    </ClCompile>
-    <ClCompile Include="MerchantAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
-    </ClCompile>
-    <ClCompile Include="TheifAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
-    </ClCompile>
-    <ClCompile Include="WarlordAction.cpp">
-      <Filter>Source Files\CharacterActions</Filter>
+    <ClCompile Include="CourtOfMiraclesCard.cpp">
+      <Filter>Source Files\Cards\Buildings</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
