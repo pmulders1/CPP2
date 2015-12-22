@@ -99,7 +99,11 @@ void Game::HandleCommand(shared_ptr<Socket> client, shared_ptr<Player> player, s
 
 		for (int i = 1; i <= CharacterType::WARLORD; i++)
 		{
-			if (this->FindPlayer((CharacterType)i)) {
+			pair<int, int> indexes = this->FindPlayer((CharacterType)i);
+			// Check of next character is alive otherwise skip turn.
+			if ((indexes.first != -1 && indexes.second != -1) && players[indexes.first].first->characterCards[indexes.second].first) {
+				this->ontabledeck.push_back(players[indexes.first].first->characterCards[indexes.second]);
+				this->currentPlayer = indexes.first;
 				this->PlayTurn((CharacterType)i);
 			}
 		}
@@ -152,7 +156,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player, shared_ptr<Socket> cl
 				if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
 					throw exception();
 				}
-				players[currentPlayer].first->set_characterCard(false, charactersDeck[cardnr]);
+				players[currentPlayer].first->set_characterCard(true, charactersDeck[cardnr]);
 				charactersDeck.erase(charactersDeck.begin() + cardnr);
 				valid = true;
 			}
@@ -222,7 +226,7 @@ void Game::CharacterSelection3P(shared_ptr<Player> player, shared_ptr<Socket> cl
 				if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
 					throw exception();
 				}
-				players[currentPlayer].first->set_characterCard(false, charactersDeck[cardnr]);
+				players[currentPlayer].first->set_characterCard(true, charactersDeck[cardnr]);
 				charactersDeck.erase(charactersDeck.begin() + cardnr);
 				valid = true;
 			}
@@ -270,20 +274,18 @@ void Game::StartGame(shared_ptr<Player> player, shared_ptr<Socket> client) {
 	}
 }
 
-bool Game::FindPlayer(CharacterType type) {
+pair<int, int> Game::FindPlayer(CharacterType type) {
 	for (size_t i = 0; i < players.size(); i++)
 	{
 		for (size_t j = 0; j < players[i].first->characterCards.size(); j++)
 		{
 			if (players[i].first->characterCards[j].second->CheckType(type)) {
-				players[i].first->characterCards[j].first = true;
-				currentPlayer = i;
-				return true;
-				break;
+
+				return make_pair(i, j);
 			}
 		}
 	}
-	return false;
+	return make_pair(-1, -1);
 }
 
 void Game::PlayTurn(CharacterType type) {
@@ -340,6 +342,7 @@ void Game::PlayTurn(CharacterType type) {
 				DrawCards();
 				break;
 			case 4:
+				
 				break;
 			default:
 				break;
@@ -352,7 +355,6 @@ void Game::PlayTurn(CharacterType type) {
 			valid = false;
 		}
 	}
-	string temp{ players[currentPlayer].second->readline() };
 }
 
 void Game::ShowBoard() {
@@ -368,12 +370,17 @@ void Game::ShowBoard() {
 		*client << "Plays as: \r\n\r\n";
 		for (size_t x = 0; x < players[i].first->characterCards.size(); x++) {
 			// Als de speler zijn character nog gesloten zijn omdat hij nog niet aan de beurt is 
-			// geweest dan wordt er non available geprint.
-			if (players[i].first->characterCards[x].first == true) {
-				*client << to_string(x + 1) << ": " << players[i].first->characterCards[x].second->print();
-			}
-			// Anders wordt de naam van het character geprint.
-			else {
+			// geweest dan wordt er not available geprint.
+			const pair<bool, shared_ptr<BasicCard>> X{ players[i].first->characterCards[x] };
+			auto it = std::find_if(ontabledeck.begin(), ontabledeck.end(), [&X](const pair<bool, shared_ptr<BasicCard>>& p)
+			{ 
+				return p.second == X.second; 
+			});
+			
+			if (it != ontabledeck.end())
+			{
+				*client << to_string(x + 1) << ": " << it->second->print();
+			} else {
 				*client << to_string(x + 1) << ": Still unknown.\r\n" ;
 			}
 		}
@@ -427,6 +434,19 @@ void Game::DrawCards() {
 void Game::AddNewGold(int amount) {
 	players[currentPlayer].first->set_coins(players[currentPlayer].first->get_coins() + amount);
 	*players[currentPlayer].second << "New gold amount: " << players[currentPlayer].first->get_coins();
+}
+
+void Game::KillPlayer(CharacterType type) {
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		for (size_t j = 0; j < players[i].first->characterCards.size(); j++)
+		{
+			if (players[i].first->characterCards[j].second->CheckType(type)) {
+				players[i].first->characterCards[j].first = false;
+				break;
+			}
+		}
+	}
 }
 
 void Game::Help(shared_ptr<Player> player, shared_ptr<Socket> client) {

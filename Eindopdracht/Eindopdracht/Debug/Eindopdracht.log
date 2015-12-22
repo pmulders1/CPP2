@@ -1,11 +1,8 @@
 ﻿  Game.cpp
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(137): warning C4018: '>=': signed/unsigned mismatch
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(152): warning C4018: '>': signed/unsigned mismatch
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(177): warning C4018: '>': signed/unsigned mismatch
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(207): warning C4018: '>=': signed/unsigned mismatch
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(222): warning C4018: '>': signed/unsigned mismatch
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(245): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  main.cpp
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(141): warning C4018: '>=': signed/unsigned mismatch
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(156): warning C4018: '>': signed/unsigned mismatch
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(181): warning C4018: '>': signed/unsigned mismatch
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(211): warning C4018: '>=': signed/unsigned mismatch
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(226): warning C4018: '>': signed/unsigned mismatch
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(249): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Eindopdracht.vcxproj -> C:\Users\Omfgugotpwnd\Source\Repos\CPP2\Eindopdracht\Debug\Eindopdracht.exe

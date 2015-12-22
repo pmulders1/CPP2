@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\CharacterActions">
+      <UniqueIdentifier>{f765bef8-f5ef-488c-b3cb-1107bd5b2921}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CharacterActions">
+      <UniqueIdentifier>{f1d7c13b-1c75-49cf-9fc9-de41f399393f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientCommand.h">
@@ -48,6 +54,33 @@
     <ClInclude Include="CharacterType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BaseAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AssasinAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="WarlordAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchitectAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="MerchantAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="BishopAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="MagicianAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="KingAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
+    <ClInclude Include="TheifAction.h">
+      <Filter>Header Files\CharacterActions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -76,6 +109,33 @@
     </ClCompile>
     <ClCompile Include="SpecialCard.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AssasinAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="ArchitectAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="BishopAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="KingAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="MagicianAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="MerchantAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="TheifAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
+    </ClCompile>
+    <ClCompile Include="WarlordAction.cpp">
+      <Filter>Source Files\CharacterActions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

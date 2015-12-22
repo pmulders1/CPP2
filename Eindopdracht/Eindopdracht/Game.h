@@ -24,6 +24,7 @@ public:
 	bool started = false;
 
 	int jackpot = 30;
+	int currentPlayer;
 
 	void HandleCommand(shared_ptr<Socket> client, shared_ptr<Player> player, string command);
 	void JoinPlayer(shared_ptr<Player> player, shared_ptr<Socket> client);
@@ -37,7 +38,8 @@ public:
 	void AddNewGold(int amount);
 	void DrawCards();
 
-	bool FindPlayer(CharacterType type);
+	pair<int, int> FindPlayer(CharacterType type);
+	void KillPlayer(CharacterType type);
 	void PlayTurn(CharacterType type);
 	
 	vector<pair<shared_ptr<Player>, shared_ptr<Socket>>> players;
@@ -47,7 +49,5 @@ public:
 	vector<shared_ptr<BasicCard>> charactersDeck;
 
 	~Game();
-private:
-	int currentPlayer;
 };
 
