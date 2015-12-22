@@ -36,29 +36,15 @@ Game::Game()
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stronghold", 5, CharacterType::WARLORD)});
 
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new CourtOfMiraclesCard()});
-
-	/*
-
-	shared_ptr<BasicCard> courtofmiracles(new SpecialCard("Court of Miracles", 2));
-	shared_ptr<BasicCard> dungeon(new SpecialCard("Dungeon", 3));
-	shared_ptr<BasicCard> graveyard(new SpecialCard("Graveyard", 5));
-	shared_ptr<BasicCard> labatorium(new SpecialCard("Labatorium", 5));
-	shared_ptr<BasicCard> workshop(new SpecialCard("workshop", 5));
-	shared_ptr<BasicCard> obversatorium(new SpecialCard("Obversatorium", 5));
-	shared_ptr<BasicCard> library(new SpecialCard("library", 6));
-	shared_ptr<BasicCard> magiciansschool(new SpecialCard("Magicians school", 6));
-	shared_ptr<BasicCard> dragonsgate(new SpecialCard("Dragonsgate", 6));
-	shared_ptr<BasicCard> university(new SpecialCard("University", 6));
-	buildingsDeck.push_back(courtofmiracles);
-	buildingsDeck.push_back(dungeon);
-	buildingsDeck.push_back(graveyard);
-	buildingsDeck.push_back(labatorium);
-	buildingsDeck.push_back(workshop);
-	buildingsDeck.push_back(obversatorium);
-	buildingsDeck.push_back(library);
-	buildingsDeck.push_back(magiciansschool);
-	buildingsDeck.push_back(dragonsgate);
-	buildingsDeck.push_back(university);*/
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dungeon()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Graveyard()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Labatorium()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Workshop()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Obversatorium()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Library()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new MagiciansSchool()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dragonsgate()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new University()});
 }
 
 void Game::HandleCommand(shared_ptr<Player> player, string command) {

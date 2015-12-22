@@ -18,6 +18,15 @@
 #include "ArchitectCard.h"
 #include "WarlordCard.h"
 #include "CourtOfMiraclesCard.h"
+#include "Dragonsgate.h"
+#include "Dungeon.h"
+#include "Graveyard.h"
+#include "Labatorium.h"
+#include "Library.h"
+#include "MagiciansSchool.h"
+#include "University.h"
+#include "Workshop.h"
+#include "Obversatorium.h"
 
 using namespace std;
 
