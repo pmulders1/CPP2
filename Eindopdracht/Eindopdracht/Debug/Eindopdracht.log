@@ -1,8 +1,7 @@
 ﻿  Game.cpp
-c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\game.cpp(7): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  BuildingCard.cpp
-  Generating Code...
-  Compiling...
-  main.cpp
-  Generating Code...
-  Eindopdracht.vcxproj -> C:\Users\Omfgugotpwnd\Source\Repos\CPP2\Eindopdracht\Debug\Eindopdracht.exe
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(5): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(161): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(188): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(236): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(453): warning C4018: '>': signed/unsigned mismatch
+  Eindopdracht.vcxproj -> C:\Users\Paul\Documents\GitHub\CPP2\Eindopdracht\Debug\Eindopdracht.exe

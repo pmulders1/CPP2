@@ -4,7 +4,7 @@
 
 WarlordCard::WarlordCard() : CharacterCard("Warlord", CharacterType::WARLORD)
 {
-	this->set_Discription("Destroy any building, Recieves gold from military buildings.");
+	this->set_discription("Destroy any building, Recieves gold from military buildings.");
 }
 
 void WarlordCard::execute(){

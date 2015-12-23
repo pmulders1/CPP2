@@ -9,6 +9,9 @@
 /*
 TODO:
 	1. In game.startgame() krijgen alle spelers om de beurt 4 kaarten. misschien iedere speler om de beurt 1 kaart en dat 4x.
+	2. Uitleg voor functies in een map.
+	3. PlayTurn MOET!!! verbeteren/refactoren - misschien hulp van Bart
+	4. Printen van type en 'cost' naast kaart - ShowBoard en overzicht beurt
 
 VRAGEN:
 */

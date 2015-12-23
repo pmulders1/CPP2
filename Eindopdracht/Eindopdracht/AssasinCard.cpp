@@ -1,12 +1,12 @@
 #include "AssasinCard.h"
-
+#include <iostream>
 AssasinCard::AssasinCard() : CharacterCard("Assasin", CharacterType::ASSASSIN)
 {
-	this->set_Discription("Kill any other character.");
+	this->set_discription("Kill any other character.");
 }
 
 void AssasinCard::execute() {
-
+	cout << "Hi" << endl;
 }
 
 AssasinCard::~AssasinCard()

@@ -7,6 +7,7 @@
 #include <string> 
 #include <ctime>
 #include <vector>
+#include <map>
 #include "Deck.h"
 #include "BuildingCard.h"
 #include "AssasinCard.h"
@@ -38,11 +39,22 @@ public:
 	void JoinPlayer(shared_ptr<Player> player);
 	void StartGame(shared_ptr<Player> player);
 	void Help(shared_ptr<Player> player);
+	void PlayTurn(string type);
+
+	void CharacterSelection2P(shared_ptr<Player> player);
+	void CharacterSelection3P(shared_ptr<Player> player);
+	void Reset();
+	void ShowBoard();
+	void DrawCards();
+	bool ConstructBuildings();
 
 	vector<shared_ptr<Player>> players;
+	map<CharacterType, shared_ptr<CharacterCard>> allCharacters;
 	Deck buildingsDeck;
 	Deck charactersDeck;
-
+	Deck onTableDeck;
+	
+	shared_ptr<Player> currentPlayer;
 
 	bool playing = false;
 	~Game();

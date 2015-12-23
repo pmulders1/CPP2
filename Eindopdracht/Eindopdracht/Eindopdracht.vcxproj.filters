@@ -93,32 +93,32 @@
     <ClInclude Include="CourtOfMiraclesCard.h">
       <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
-    <ClInclude Include="Dungeon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graveyard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Labatorium.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Workshop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Obversatorium.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Library.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="MagiciansSchool.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Library.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Labatorium.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Graveyard.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Dragonsgate.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Workshop.h">
+      <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="University.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

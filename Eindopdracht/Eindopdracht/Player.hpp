@@ -25,6 +25,7 @@ public:
 	// Zelf gemaakte shit
 	void set_Client(const shared_ptr<Socket> new_client) { client = new_client; }
 	void write_Client(const string str) { *client << str; }
+	string readline() { return client->readline(); }
 
 	// Set/Get coins
 	void set_Coins(int amount) { this->coins += amount;	}
