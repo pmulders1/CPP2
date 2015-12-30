@@ -9,7 +9,7 @@ public:
 	virtual string print() const {
 		return this->get_name() + ": " + this->get_discription() + "\r\n";
 	}
-	virtual void execute() = 0;
+	virtual void execute(Game game) = 0;
 
 	string get_discription() const { return this->discription; }
 	void set_discription(string val) { this->discription = val; }
@@ -20,10 +20,14 @@ public:
 	bool get_alive() const { return this->alive; }
 	void set_alive(bool val) { this->alive = val; }
 
+	bool get_beenStolen() const { return this->beenStolen; }
+	void set_beenStolen(bool val) { this->beenStolen = val; }
+
 	virtual ~CharacterCard() = 0;
 private:
 	string discription;
 	bool alive = true;
+	bool beenStolen = false;
 	shared_ptr<Player> owner;
 };
 

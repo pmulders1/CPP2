@@ -12,6 +12,7 @@ TODO:
 	2. Uitleg voor functies in een map.
 	3. PlayTurn MOET!!! verbeteren/refactoren - misschien hulp van Bart
 	4. Printen van type en 'cost' naast kaart - ShowBoard en overzicht beurt
+	5. Kun je als Thief van jezelf stelen?
 
 VRAGEN:
 */

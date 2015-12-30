@@ -42,7 +42,7 @@ public:
 private:
 	std::string name;
 	int coins = 0;
-	bool isKing;
+	bool isKing = false;
 	shared_ptr<Socket> client;
 };
 

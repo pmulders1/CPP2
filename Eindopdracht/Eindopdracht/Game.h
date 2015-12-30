@@ -46,6 +46,7 @@ public:
 	void Reset();
 	void ShowBoard();
 	void DrawCards();
+	shared_ptr<BasicCard> DrawSingleCard();
 	bool ConstructBuildings();
 
 	vector<shared_ptr<Player>> players;

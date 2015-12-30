@@ -4,7 +4,7 @@ class MerchantCard : public CharacterCard
 {
 public:
 	MerchantCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~MerchantCard();
 };
 

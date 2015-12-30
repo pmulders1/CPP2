@@ -4,7 +4,7 @@ class KingCard : public CharacterCard
 {
 public:
 	KingCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~KingCard();
 };
 

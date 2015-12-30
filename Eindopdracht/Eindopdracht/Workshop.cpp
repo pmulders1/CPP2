@@ -1,12 +1,11 @@
 #include "Workshop.h"
-
-
+#include "Game.h"
 
 Workshop::Workshop() : BuildingCard("Workshop", 5)
 {
 }
 
-void Workshop::execute() {
+void Workshop::execute(Game game) {
 
 }
 

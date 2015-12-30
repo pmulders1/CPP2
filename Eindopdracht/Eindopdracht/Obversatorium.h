@@ -4,7 +4,7 @@ class Obversatorium : public BuildingCard
 {
 public:
 	Obversatorium();
-	virtual void execute();
+	virtual void execute(Game game);
 	~Obversatorium();
 };
 

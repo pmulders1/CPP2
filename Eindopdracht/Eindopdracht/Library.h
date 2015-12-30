@@ -4,7 +4,7 @@ class Library : public BuildingCard
 {
 public:
 	Library();
-	virtual void execute();
+	virtual void execute(Game game);
 	~Library();
 };
 

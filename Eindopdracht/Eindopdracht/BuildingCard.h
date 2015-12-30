@@ -5,7 +5,7 @@ class BuildingCard : public BasicCard
 {
 public:
 	BuildingCard(string name, int points, CharacterType type = CharacterType::NONE);
-	virtual void execute();
+	virtual void execute(Game game);
 
 	virtual string print() const {
 		return this->get_name() + " (" + to_string(this->get_points()) + "): " + this->get_discription() + "\r\n";

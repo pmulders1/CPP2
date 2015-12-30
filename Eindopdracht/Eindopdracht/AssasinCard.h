@@ -6,7 +6,7 @@ class AssasinCard : public CharacterCard
 {
 public:
 	AssasinCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~AssasinCard();
 };
 

@@ -4,7 +4,7 @@ class University : public BuildingCard
 {
 public:
 	University();
-	virtual void execute();
+	virtual void execute(Game game);
 	~University();
 };
 

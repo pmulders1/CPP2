@@ -4,7 +4,7 @@ class WarlordCard : public CharacterCard
 {
 public:
 	WarlordCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~WarlordCard();
 };
 

@@ -4,7 +4,7 @@ class Workshop : public BuildingCard
 {
 public:
 	Workshop();
-	virtual void execute();
+	virtual void execute(Game game);
 	~Workshop();
 };
 

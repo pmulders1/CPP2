@@ -1,12 +1,11 @@
 #include "Labatorium.h"
-
-
+#include "Game.h"
 
 Labatorium::Labatorium() : BuildingCard("Labatorium", 5)
 {
 }
 
-void Labatorium::execute() {
+void Labatorium::execute(Game game) {
 
 }
 

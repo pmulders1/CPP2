@@ -3,12 +3,15 @@
 #include <istream>
 #include "Socket.h"
 #include "CharacterType.h"
+
+class Game;
+
 using namespace std;
 class BasicCard
 {
 public:
 	BasicCard(std::string name, CharacterType type = CharacterType::NONE);
-	virtual void execute() = 0;
+	virtual void execute(Game game) = 0;
 	virtual string print() const = 0;
 	virtual ~BasicCard() = 0;
 

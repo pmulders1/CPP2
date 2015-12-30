@@ -4,7 +4,7 @@ class MagicianCard : public CharacterCard
 {
 public:
 	MagicianCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~MagicianCard();
 };
 

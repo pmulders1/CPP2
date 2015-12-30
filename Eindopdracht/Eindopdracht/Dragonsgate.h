@@ -4,7 +4,7 @@ class Dragonsgate : public BuildingCard
 {
 public:
 	Dragonsgate();
-	virtual void execute();
+	virtual void execute(Game game);
 	~Dragonsgate();
 };
 

@@ -4,7 +4,7 @@ class CourtOfMiraclesCard : public BuildingCard
 {
 public:
 	CourtOfMiraclesCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~CourtOfMiraclesCard();
 };
 

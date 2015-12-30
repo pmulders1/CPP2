@@ -4,7 +4,7 @@ class ArchitectCard : public CharacterCard
 {
 public:
 	ArchitectCard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~ArchitectCard();
 };
 

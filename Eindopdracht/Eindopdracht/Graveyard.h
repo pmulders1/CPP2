@@ -4,7 +4,7 @@ class Graveyard : public BuildingCard
 {
 public:
 	Graveyard();
-	virtual void execute();
+	virtual void execute(Game game);
 	~Graveyard();
 };
 
