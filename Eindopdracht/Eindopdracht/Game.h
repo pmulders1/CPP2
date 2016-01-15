@@ -43,9 +43,13 @@ public:
 
 	void CharacterSelection2P(shared_ptr<Player> player);
 	void CharacterSelection3P(shared_ptr<Player> player);
-	void Reset();
+	void CharacterReset();
+	void GameReset();
+	void FillCharactersDeck();
+	void FillBuildingsDeck();
 	void ShowBoard();
 	void DrawCards();
+	void CalculateWinner();
 	shared_ptr<BasicCard> DrawSingleCard();
 	bool ConstructBuildings();
 

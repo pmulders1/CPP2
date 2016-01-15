@@ -3,95 +3,65 @@
 Game::Game()
 {
 	srand(time(0));
-	allCharacters.insert(make_pair(CharacterType::ASSASSIN, shared_ptr<AssasinCard>{new AssasinCard()}));
-	allCharacters.insert(make_pair(CharacterType::THIEF, shared_ptr<ThiefCard>{new ThiefCard()}));
-	allCharacters.insert(make_pair(CharacterType::MAGICIAN, shared_ptr<MagicianCard>{new MagicianCard()}));
-	allCharacters.insert(make_pair(CharacterType::KING, shared_ptr<KingCard>{new KingCard()}));
-	allCharacters.insert(make_pair(CharacterType::BISHOP, shared_ptr<BishopCard>{new BishopCard()}));
-	allCharacters.insert(make_pair(CharacterType::MERCHANT, shared_ptr<MerchantCard>{new MerchantCard()}));
-	allCharacters.insert(make_pair(CharacterType::ARCHITECT, shared_ptr<ArchitectCard>{new ArchitectCard()}));
-	allCharacters.insert(make_pair(CharacterType::WARLORD, shared_ptr<WarlordCard>{new WarlordCard()}));
-	
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Estate", 3, CharacterType::KING)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Castle", 4, CharacterType::KING)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Palace", 5, CharacterType::KING)});
-
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Tavern", 1, CharacterType::MERCHANT)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stores", 2, CharacterType::MERCHANT)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Market", 2, CharacterType::MERCHANT)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Warehouse", 3, CharacterType::MERCHANT)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Port", 4, CharacterType::MERCHANT)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Town Hall", 5, CharacterType::MERCHANT)});
-
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Temple", 1, CharacterType::BISHOP)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Church", 2, CharacterType::BISHOP)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Monastery", 3, CharacterType::BISHOP)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Cathedral", 1, CharacterType::BISHOP)});
-
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Watchtower", 1, CharacterType::WARLORD)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Prison", 2, CharacterType::WARLORD)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Tournament Field", 3, CharacterType::WARLORD)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stronghold", 5, CharacterType::WARLORD)});
-
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new CourtOfMiraclesCard()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dungeon()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Graveyard()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Labatorium()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Workshop()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Obversatorium()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Library()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new MagiciansSchool()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dragonsgate()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new University()});
-
-	for (int i = 1; i <= CharacterType::WARLORD; i++)
-	{
-		charactersDeck.add_Card(allCharacters[static_cast<CharacterType>(i)]);
-	}
+	FillCharactersDeck();
+	FillBuildingsDeck();
 }
 
 void Game::HandleCommand(shared_ptr<Player> player, string command) {
+	bool gameOver = false;
+
 	transform(command.begin(), command.end(), command.begin(), ::tolower);
 	if (command == "join") {
 		this->JoinPlayer(player);
 	}
 	else if (command == "start-game") {
 		this->StartGame(player);
-		if (players.size() == 2) {
-			this->CharacterSelection2P(player);
-		}
-		if (players.size() == 3) {
-			this->CharacterSelection3P(player);
-		}
-
-		for (int i = 1; i <= CharacterType::WARLORD; i++)
-		{
-			CharacterType type = static_cast<CharacterType>(i);
-			if (allCharacters[type]->get_owner() == nullptr) {
-				continue;
+		while (!gameOver) {
+			if (players.size() == 2) {
+				this->CharacterSelection2P(player);
+			}
+			if (players.size() == 3) {
+				this->CharacterSelection3P(player);
 			}
 
-			currentPlayer = allCharacters[type]->get_owner();
-			if (!allCharacters[type]->get_alive()) {
-				currentPlayer->write_Client(allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
-				currentPlayer->readline();
-			} else {
-				if (dynamic_pointer_cast<CharacterCard>(currentPlayer->characterCards[type])->get_beenStolen()) {
-					currentPlayer->write_Client("You have been stolen by the thief!\r\n");
-					currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
-
-					shared_ptr<Player> thief = allCharacters[CharacterType::THIEF]->get_owner();
-					thief->set_Coins(currentPlayer->get_Coins());
-					currentPlayer->set_Coins(-currentPlayer->get_Coins());
-					currentPlayer->readline();
+			for (int i = 1; i <= CharacterType::WARLORD; i++)
+			{
+				CharacterType type = static_cast<CharacterType>(i);
+				if (allCharacters[type]->get_owner() == nullptr) {
+					continue;
 				}
 
-				currentPlayer->characterCards[type]->set_visible(true);
-				onTableDeck.add_Card(currentPlayer->characterCards[type]);
+				currentPlayer = allCharacters[type]->get_owner();
+				if (!allCharacters[type]->get_alive()) {
+					currentPlayer->write_Client(allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
+					currentPlayer->readline();
+				}
+				else {
+					if (dynamic_pointer_cast<CharacterCard>(currentPlayer->characterCards[type])->get_beenStolen()) {
+						currentPlayer->write_Client("You have been stolen by the thief!\r\n");
+						currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
 
-				this->PlayTurn(ToString(type));
+						shared_ptr<Player> thief = allCharacters[CharacterType::THIEF]->get_owner();
+						thief->set_Coins(currentPlayer->get_Coins());
+						currentPlayer->set_Coins(-currentPlayer->get_Coins());
+						currentPlayer->readline();
+					}
+
+					currentPlayer->characterCards[type]->set_visible(true);
+					onTableDeck.add_Card(currentPlayer->characterCards[type]);
+
+					this->PlayTurn(ToString(type));
+					if (currentPlayer->playerField.size() >= 8) {
+						if (!gameOver) {
+							currentPlayer->set_FirsToEight(true);
+						}
+						gameOver = true;
+					}
+				}
 			}
 		}
+		CalculateWinner();
+		GameReset();
 	}
 	else if (command == "help") {
 		this->Help(player);
@@ -99,11 +69,15 @@ void Game::HandleCommand(shared_ptr<Player> player, string command) {
 }
 
 void Game::JoinPlayer(shared_ptr<Player> player) {
-	this->players.push_back(player);
+	if (!this->playing) {
+		this->players.push_back(player);
 
-	for (size_t i = 0; i < players.size(); i++)
-	{
-		players[i]->write_Client(player->get_name() + " has joined the game\r\n");
+		for (size_t i = 0; i < players.size(); i++)
+		{
+			players[i]->write_Client(player->get_name() + " has joined the game\r\n");
+		}
+	} else {
+		player->write_Client("Game already started.\r\n");
 	}
 }
 
@@ -140,7 +114,7 @@ void Game::StartGame(shared_ptr<Player> player) {
 }
 
 void Game::CharacterSelection2P(shared_ptr<Player> player) {
-	this->Reset();
+	this->CharacterReset();
 	int index = 0;
 	for (; index < players.size(); index++)
 	{
@@ -148,9 +122,10 @@ void Game::CharacterSelection2P(shared_ptr<Player> player) {
 			break;
 		}
 	}
-
+	players[index]->write_Client("\u001B[2J");
 	players[index]->write_Client("The following card will be placed face down on the table: \r\n");
 	players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
+	players[index]->readline();
 
 	charactersDeck[0]->set_visible(false);
 	onTableDeck.add_Card(charactersDeck[0]);
@@ -160,7 +135,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player) {
 	int count = 0;
 	while (count < players.size() * 2) {
 		currentPlayer = players[index];
-
+		currentPlayer->write_Client("\u001B[2J");
 		bool valid = false;
 		while (!valid) {
 			currentPlayer->write_Client("Choose one of the following Character cards:\r\n\r\n");
@@ -238,7 +213,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player) {
 }
 
 void Game::CharacterSelection3P(shared_ptr<Player> player) {
-	this->Reset();
+	this->CharacterReset();
 	int index = 0;
 	for (; index < players.size(); index++)
 	{
@@ -439,6 +414,7 @@ void Game::ShowBoard() {
 }
 
 shared_ptr<BasicCard> Game::DrawSingleCard() {
+	buildingsDeck.shuffle();
 	shared_ptr<BasicCard> temp = buildingsDeck[0];
 	buildingsDeck.remove_Card(0);
 	return temp;
@@ -447,7 +423,7 @@ shared_ptr<BasicCard> Game::DrawSingleCard() {
 void Game::DrawCards() {
 	currentPlayer->write_Client("\u001B[2J");
 	currentPlayer->write_Client("Cards drawn:\r\n\r\n");
-
+	buildingsDeck.shuffle();
 	for (size_t i = 0; i < 2; i++) {
 		currentPlayer->write_Client(to_string(i) + ": " + buildingsDeck[i]->print());
 	}
@@ -477,6 +453,38 @@ void Game::DrawCards() {
 	}
 }
 
+void Game::CalculateWinner() {
+	// Berekening alle scores
+	vector<pair<shared_ptr<Player>, int>> scores;
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		this->players[i]->CalculateScore();
+		scores.push_back(make_pair(this->players[i],this->players[i]->get_Points()));
+	}
+	sort(scores.begin(), scores.end(), [](const std::pair<shared_ptr<Player>, int> &left, const std::pair<shared_ptr<Player>, int> &right) {
+		return left.second < right.second;
+	});
+
+	// Berekening voor meerdere gelijke scores
+	int highest = scores[0].second;
+	vector<pair<shared_ptr<Player>, int>> buildingsScores;
+	buildingsScores.push_back(make_pair(scores[0].first, scores[0].first->CalculateBuildingScore()));
+	for (size_t i = 1; i < scores.size(); i++)
+	{
+		if (scores[i].second == highest) {
+			buildingsScores.push_back(make_pair(scores[i].first, scores[i].first->CalculateBuildingScore()));
+		}
+	}
+	sort(buildingsScores.begin(), buildingsScores.end(), [](const std::pair<shared_ptr<Player>, int> &left, const std::pair<shared_ptr<Player>, int> &right) {
+		return left.second < right.second;
+	});
+	
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		players[i]->write_Client("Player " + buildingsScores[0].first->get_name() + " is the winner! The rest is a LOSER!! \r\nThank you for playing!\r\n");
+	}
+}
+
 bool Game::ConstructBuildings() {
 	currentPlayer->write_Client("\u001B[2J");
 	currentPlayer->write_Client("Gold amount: \r\n");
@@ -485,7 +493,7 @@ bool Game::ConstructBuildings() {
 
 	for (size_t i = 0; i < currentPlayer->buildingCards.size(); i++)
 	{
-		currentPlayer->write_Client(to_string(i + 1) + ". " + currentPlayer->buildingCards[i]->print());
+		currentPlayer->write_Client(to_string(i) + ". " + currentPlayer->buildingCards[i]->print());
 	}
 	if (currentPlayer->buildingCards.size() == 0) {
 		currentPlayer->write_Client("No cards in hand. You can't construct any buildings.\r\n");
@@ -519,16 +527,16 @@ bool Game::ConstructBuildings() {
 			}
 
 			int choice = atoi(temp.c_str());
-			if (choice < 0 || choice > currentPlayer->buildingCards.size()) {
+			if (choice < 0 || choice > currentPlayer->buildingCards.size() - 1) {
 				throw exception();
 			}
-			int cardCost = dynamic_pointer_cast<BuildingCard>(currentPlayer->buildingCards[choice - 1])->get_points();
+			int cardCost = dynamic_pointer_cast<BuildingCard>(currentPlayer->buildingCards[choice])->get_points();
 			if (cardCost > currentPlayer->get_Coins()) {
 				valid = false;
 				currentPlayer->write_Client("You can't afford to construct this building");
 			} else {
-				currentPlayer->playerField.add_Card(currentPlayer->buildingCards[choice - 1]);
-				currentPlayer->buildingCards.remove_Card(choice - 1);
+				currentPlayer->playerField.add_Card(currentPlayer->buildingCards[choice]);
+				currentPlayer->buildingCards.remove_Card(choice);
 
 				currentPlayer->set_Coins(-cardCost);
 
@@ -544,7 +552,8 @@ bool Game::ConstructBuildings() {
 	return true;
 }
 
-void Game::Reset() {
+void Game::CharacterReset() {
+	onTableDeck.clear();
 	for (int i = 1; i <= CharacterType::WARLORD; i++)
 	{
 		allCharacters[(CharacterType)i]->set_owner(nullptr);
@@ -552,6 +561,78 @@ void Game::Reset() {
 	for (size_t i = 0; i < players.size(); i++)
 	{
 		players[i]->characterCards.clear();
+	}
+
+	charactersDeck.clear();
+	for (int i = 1; i <= CharacterType::WARLORD; i++)
+	{
+		charactersDeck.add_Card(allCharacters[static_cast<CharacterType>(i)]);
+	}
+	charactersDeck.shuffle();
+}
+
+void Game::GameReset() {
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		players[i]->Reset();
+	}
+	FillBuildingsDeck();
+	FillCharactersDeck();
+
+	onTableDeck.clear();
+	playing = false;
+}
+
+void Game::FillBuildingsDeck() {
+	buildingsDeck.clear();
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Estate", 3, CharacterType::KING)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Castle", 4, CharacterType::KING)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Palace", 5, CharacterType::KING)});
+
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Tavern", 1, CharacterType::MERCHANT)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stores", 2, CharacterType::MERCHANT)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Market", 2, CharacterType::MERCHANT)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Warehouse", 3, CharacterType::MERCHANT)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Port", 4, CharacterType::MERCHANT)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Town Hall", 5, CharacterType::MERCHANT)});
+
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Temple", 1, CharacterType::BISHOP)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Church", 2, CharacterType::BISHOP)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Monastery", 3, CharacterType::BISHOP)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Cathedral", 1, CharacterType::BISHOP)});
+
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Watchtower", 1, CharacterType::WARLORD)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Prison", 2, CharacterType::WARLORD)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Tournament Field", 3, CharacterType::WARLORD)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stronghold", 5, CharacterType::WARLORD)});
+
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new CourtOfMiraclesCard()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dungeon()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Graveyard()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Labatorium()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Workshop()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Obversatorium()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Library()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new MagiciansSchool()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dragonsgate()});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new University()});
+}
+
+void Game::FillCharactersDeck() {
+	allCharacters.clear();
+	allCharacters.insert(make_pair(CharacterType::ASSASSIN, shared_ptr<AssasinCard>{new AssasinCard()}));
+	allCharacters.insert(make_pair(CharacterType::THIEF, shared_ptr<ThiefCard>{new ThiefCard()}));
+	allCharacters.insert(make_pair(CharacterType::MAGICIAN, shared_ptr<MagicianCard>{new MagicianCard()}));
+	allCharacters.insert(make_pair(CharacterType::KING, shared_ptr<KingCard>{new KingCard()}));
+	allCharacters.insert(make_pair(CharacterType::BISHOP, shared_ptr<BishopCard>{new BishopCard()}));
+	allCharacters.insert(make_pair(CharacterType::MERCHANT, shared_ptr<MerchantCard>{new MerchantCard()}));
+	allCharacters.insert(make_pair(CharacterType::ARCHITECT, shared_ptr<ArchitectCard>{new ArchitectCard()}));
+	allCharacters.insert(make_pair(CharacterType::WARLORD, shared_ptr<WarlordCard>{new WarlordCard()}));
+
+	charactersDeck.clear();
+	for (int i = 1; i <= CharacterType::WARLORD; i++)
+	{
+		charactersDeck.add_Card(allCharacters[static_cast<CharacterType>(i)]);
 	}
 }
 

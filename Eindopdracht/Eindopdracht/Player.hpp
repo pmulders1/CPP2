@@ -12,6 +12,8 @@
 #include <string>
 #include "Socket.h"
 #include "Deck.h"
+#include "BuildingCard.h"
+#include <map>
 
 using namespace std;
 class Player {
@@ -26,6 +28,9 @@ public:
 	void set_Client(const shared_ptr<Socket> new_client) { client = new_client; }
 	void write_Client(const string str) { *client << str; }
 	string readline() { return client->readline(); }
+	void Reset();
+	void CalculateScore();
+	int CalculateBuildingScore();
 
 	// Set/Get coins
 	void set_Coins(int amount) { this->coins += amount;	}
@@ -33,6 +38,12 @@ public:
 
 	void set_King(bool val) { this->isKing = val; }
 	bool get_King() { return this->isKing; }
+
+	void set_FirsToEight(bool val) { this->firstToEight = val; }
+	bool get_FirsToEight() { return this->firstToEight; }
+
+	void set_Points(int amount) { this->points += amount; }
+	int get_Points() { return this->points; }
 
 	// Decks
 	Deck buildingCards;
@@ -42,7 +53,9 @@ public:
 private:
 	std::string name;
 	int coins = 0;
+	int points = 0;
 	bool isKing = false;
+	bool firstToEight = false;
 	shared_ptr<Socket> client;
 };
 

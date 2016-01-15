@@ -8,7 +8,7 @@ public:
 	virtual void execute(Game game);
 
 	virtual string print() const {
-		return this->get_name() + " (" + to_string(this->get_points()) + "): " + this->get_discription() + "\r\n";
+		return this->get_name() + " - Type " + ToString(this->get_type()) +" (" + to_string(this->get_points()) + "): " + this->get_discription() + "\r\n";
 	}
 
 	~BuildingCard();
