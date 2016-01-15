@@ -9,7 +9,7 @@ AssasinCard::AssasinCard() : CharacterCard("Assasin", CharacterType::ASSASSIN)
 void AssasinCard::execute(Game game) {
 	game.currentPlayer->write_Client("\u001B[2J");
 	game.currentPlayer->write_Client("Choose a character to chop his head off:\r\n\r\n");
-
+	
 	for (int i = 2; i <= CharacterType::WARLORD; i++)
 	{
 		string type = ToString(static_cast<CharacterType>(i));

@@ -9,7 +9,7 @@ MerchantCard::MerchantCard() : CharacterCard("Merchant", CharacterType::MERCHANT
 void MerchantCard::execute(Game game) {
 	game.currentPlayer->write_Client("\u001B[2J");
 	game.currentPlayer->write_Client("You got 1 gold for being the merchant. \r\n");
-	int amount = 0;
+	int amount = 1;
 	for (size_t i = 0; i < game.currentPlayer->playerField.size(); i++)
 	{
 		if (game.currentPlayer->playerField[i]->get_type() == CharacterType::BISHOP) {

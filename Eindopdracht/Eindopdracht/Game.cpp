@@ -479,6 +479,8 @@ void Game::DrawCards() {
 
 bool Game::ConstructBuildings() {
 	currentPlayer->write_Client("\u001B[2J");
+	currentPlayer->write_Client("Gold amount: \r\n");
+	currentPlayer->write_Client(to_string(currentPlayer->get_Coins())+" gold pieces.\r\n\r\n");
 	currentPlayer->write_Client("Cards in hand: \r\n\r\n");
 
 	for (size_t i = 0; i < currentPlayer->buildingCards.size(); i++)
@@ -489,9 +491,10 @@ bool Game::ConstructBuildings() {
 		currentPlayer->write_Client("No cards in hand. You can't construct any buildings.\r\n");
 		currentPlayer->write_Client("Returning to main menu.");
 		currentPlayer->readline();
-		return true;
+		return false;
 	}
 
+	currentPlayer->write_Client("\r\nType 'stop' to stop building.\r\n");
 	currentPlayer->write_Client("\r\nChoose a card to build: \r\n");
 
 	// Check voor geldige invoer
@@ -499,7 +502,22 @@ bool Game::ConstructBuildings() {
 	while (!valid) {
 		string temp{ currentPlayer->readline() };
 
+
 		try {
+			if (temp == "stop") {
+				currentPlayer->write_Client("\u001B[2J");
+				currentPlayer->write_Client("Current playfield:\r\n\r\n");
+
+				for (int i = 0; i < currentPlayer->playerField.size(); i++)
+				{
+					currentPlayer->playerField[i]->print();
+				}
+
+				currentPlayer->write_Client("\r\nPress any key to continue...\r\n");
+				currentPlayer->readline();
+				return false;
+			}
+
 			int choice = atoi(temp.c_str());
 			if (choice < 0 || choice > currentPlayer->buildingCards.size()) {
 				throw exception();

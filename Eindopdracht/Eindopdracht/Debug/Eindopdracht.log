@@ -1,39 +1,4 @@
-﻿  MerchantCard.cpp
-  KingCard.cpp
-  Game.cpp
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(5): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(145): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(161): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(176): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(216): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(234): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(243): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(259): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(274): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(291): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(504): warning C4018: '>': signed/unsigned mismatch
-  BishopCard.cpp
-  AssasinCard.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  Deck.cpp
-  BasicCard.cpp
-  main.cpp
-  Workshop.cpp
-  WarlordCard.cpp
-  University.cpp
-  ThiefCard.cpp
-  Player.cpp
-  Obversatorium.cpp
-  MagiciansSchool.cpp
-  MagicianCard.cpp
-  Library.cpp
-  Labatorium.cpp
-  Graveyard.cpp
-  Dungeon.cpp
-  Dragonsgate.cpp
-  CourtOfMiraclesCard.cpp
-  CharacterCard.cpp
-  BuildingCard.cpp
-  ArchitectCard.cpp
-  Eindopdracht.vcxproj -> C:\Users\Paul\Documents\GitHub\CPP2\Eindopdracht\Debug\Eindopdracht.exe
+﻿  WarlordCard.cpp
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\warlordcard.cpp(32): warning C4018: '>': signed/unsigned mismatch
+c:\users\omfgugotpwnd\source\repos\cpp2\eindopdracht\eindopdracht\warlordcard.cpp(54): warning C4018: '>': signed/unsigned mismatch
+  Eindopdracht.vcxproj -> C:\Users\Omfgugotpwnd\Source\Repos\CPP2\Eindopdracht\Debug\Eindopdracht.exe
