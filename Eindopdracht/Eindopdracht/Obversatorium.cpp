@@ -3,6 +3,7 @@
 
 Obversatorium::Obversatorium() : BuildingCard("Obversatorium", 5)
 {
+	set_special(true);
 }
 
 void Obversatorium::execute(Game game) {

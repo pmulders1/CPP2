@@ -23,7 +23,6 @@ void WarlordCard::execute(Game game){
 	}
 
 	
-	
 	while (!valid) {
 		string temp2{ game.currentPlayer->readline() };
 
@@ -66,6 +65,11 @@ void WarlordCard::execute(Game game){
 					game.buildingsDeck.add_Card(card);
 					game.buildingsDeck.shuffle();
 					game.players[cardnr2]->write_Client(card->get_name() + " (" + to_string(card->get_points()) + ") has been deconstructed by the 'Warlord'.");
+					game.tempCard = card;
+					
+					game.Detach(card);
+					// Kaart wordt gesloopd
+					game.Notify("Graveyard", game);
 
 					valid2 = true;
 

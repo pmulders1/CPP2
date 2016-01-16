@@ -10,6 +10,10 @@ public:
 	void shuffle() { random_shuffle(deck.begin(), deck.end()); }
 	void add_Card(shared_ptr<BasicCard> card) { this->deck.push_back(card); }
 	void remove_Card(int index) { this->deck.erase(this->deck.begin() + index); }
+	void remove_Card(shared_ptr<BasicCard> card) { 
+		this->deck.erase(find(this->deck.begin(), this->deck.end(), card));
+	}
+
 	size_t size() { return this->deck.size(); }
 	void clear() { deck.clear(); }
 

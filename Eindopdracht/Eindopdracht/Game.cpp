@@ -530,15 +530,19 @@ bool Game::ConstructBuildings() {
 			if (choice < 0 || choice > currentPlayer->buildingCards.size() - 1) {
 				throw exception();
 			}
-			int cardCost = dynamic_pointer_cast<BuildingCard>(currentPlayer->buildingCards[choice])->get_points();
-			if (cardCost > currentPlayer->get_Coins()) {
+			shared_ptr<BuildingCard> card = dynamic_pointer_cast<BuildingCard>(currentPlayer->buildingCards[choice]);
+			if (card->get_points() > currentPlayer->get_Coins()) {
 				valid = false;
 				currentPlayer->write_Client("You can't afford to construct this building");
 			} else {
+				if (find(notifyCards.begin(), notifyCards.end(), card) != notifyCards.end()) {
+					this->Attach(card, currentPlayer);
+				}
+				
 				currentPlayer->playerField.add_Card(currentPlayer->buildingCards[choice]);
 				currentPlayer->buildingCards.remove_Card(choice);
 
-				currentPlayer->set_Coins(-cardCost);
+				currentPlayer->set_Coins(-card->get_points());
 
 				valid = true;
 				return false;
@@ -606,9 +610,12 @@ void Game::FillBuildingsDeck() {
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Tournament Field", 3, CharacterType::WARLORD)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stronghold", 5, CharacterType::WARLORD)});
 
+	shared_ptr<BuildingCard> gv = shared_ptr<BuildingCard>{ new Graveyard() };
+	notifyCards.push_back(gv);
+
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new CourtOfMiraclesCard()});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Dungeon()});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Graveyard()});
+	buildingsDeck.add_Card(gv);
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Labatorium()});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Workshop()});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new Obversatorium()});

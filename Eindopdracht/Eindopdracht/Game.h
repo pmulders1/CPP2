@@ -28,10 +28,11 @@
 #include "University.h"
 #include "Workshop.h"
 #include "Obversatorium.h"
+#include "ISubject.h"
 
 using namespace std;
 
-class Game
+class Game : public ISubject
 {
 public:
 	Game();
@@ -58,6 +59,10 @@ public:
 	Deck buildingsDeck;
 	Deck charactersDeck;
 	Deck onTableDeck;
+
+	// Observer pattren
+	shared_ptr<BuildingCard> tempCard;
+	vector<shared_ptr<BuildingCard>> notifyCards;
 	
 	shared_ptr<Player> currentPlayer;
 

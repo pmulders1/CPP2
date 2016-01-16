@@ -4,6 +4,7 @@
 
 CourtOfMiraclesCard::CourtOfMiraclesCard() : BuildingCard("Court of Miracles", 2)
 {
+	set_special(true);
 }
 
 void CourtOfMiraclesCard::execute(Game game) {

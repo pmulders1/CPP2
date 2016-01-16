@@ -3,6 +3,7 @@
 
 Dungeon::Dungeon() : BuildingCard("Dungeon", 3)
 {
+	set_special(true);
 }
 
 void Dungeon::execute(Game game) {

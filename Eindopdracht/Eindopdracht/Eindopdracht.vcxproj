@@ -156,6 +156,8 @@
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graveyard.h" />
+    <ClInclude Include="IObserver.h" />
+    <ClInclude Include="ISubject.h" />
     <ClInclude Include="KingCard.h" />
     <ClInclude Include="Labatorium.h" />
     <ClInclude Include="Library.h" />
@@ -185,6 +187,8 @@
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graveyard.cpp" />
+    <ClCompile Include="IObserver.cpp" />
+    <ClCompile Include="ISubject.cpp" />
     <ClCompile Include="KingCard.cpp" />
     <ClCompile Include="Labatorium.cpp" />
     <ClCompile Include="Library.cpp" />

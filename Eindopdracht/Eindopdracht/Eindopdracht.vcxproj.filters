@@ -120,6 +120,12 @@
     <ClInclude Include="University.h">
       <Filter>Header Files\Cards\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="IObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -202,6 +208,12 @@
     </ClCompile>
     <ClCompile Include="Workshop.cpp">
       <Filter>Source Files\Cards\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="IObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ISubject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

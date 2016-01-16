@@ -16,7 +16,11 @@ public:
 	void set_points(int amount) { this->points = amount; }
 	int get_points() const { return this->points; }
 
+	bool get_special() const { return this->special; }
+	void set_special(bool value) { this->special = value; }
+
 private:
 	int points;
+	bool special;
 };
 

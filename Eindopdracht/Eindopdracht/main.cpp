@@ -8,8 +8,8 @@
 
 /*
 TODO:
-	2. Printen van type en 'cost' naast kaart - ShowBoard en overzicht beurt
-	3. Random is niet random
+	1. Exception handling waar?
+	2. Shuffle is niet random
 
 VRAGEN:
 */
