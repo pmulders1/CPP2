@@ -582,13 +582,14 @@ void Game::GameReset() {
 	}
 	FillBuildingsDeck();
 	FillCharactersDeck();
-
+	ClearObservers();
 	onTableDeck.clear();
 	playing = false;
 }
 
 void Game::FillBuildingsDeck() {
 	buildingsDeck.clear();
+	notifyCards.clear();
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Estate", 3, CharacterType::KING)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Castle", 4, CharacterType::KING)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Palace", 5, CharacterType::KING)});

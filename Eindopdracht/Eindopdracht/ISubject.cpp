@@ -8,9 +8,14 @@ void ISubject::Attach(shared_ptr<BuildingCard> card, shared_ptr<Player> player)
 }
 void ISubject::Detach(shared_ptr<BuildingCard> card)
 {
-	if (observers[card->get_name] != nullptr) {
+	if (observers.count(card->get_name()) > 0) {
 		observers.erase(card->get_name());
 	}
+}
+
+void ISubject::ClearObservers()
+{
+	observers.clear();
 }
 
 void ISubject::Notify(string command, Game game)
