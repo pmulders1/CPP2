@@ -66,8 +66,12 @@ void WarlordCard::execute(Game game){
 					game.buildingsDeck.shuffle();
 					game.players[cardnr2]->write_Client(card->get_name() + " (" + to_string(card->get_points()) + ") has been deconstructed by the 'Warlord'.");
 					game.tempCard = card;
+
+					// If card belongs to observer patren detach it because it is no longer in the field
+					if (find(game.notifyCards.begin(), game.notifyCards.end(), card) != game.notifyCards.end()) {
+						game.Detach(card);
+					}
 					
-					game.Detach(card);
 					// Kaart wordt gesloopd
 					game.Notify("Graveyard", game);
 
