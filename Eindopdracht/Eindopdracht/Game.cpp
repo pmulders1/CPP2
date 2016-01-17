@@ -1,116 +1,128 @@
 #include "Game.h"
 
-Game::Game()
-{
-	srand(time(0));
-	FillCharactersDeck();
-	FillBuildingsDeck();
-}
+void JoinPlayer(shared_ptr<Player> player, Game& game) {
+	if (!game.playing) {
+		game.players.push_back(player);
 
-void Game::HandleCommand(shared_ptr<Player> player, string command) {
-	bool gameOver = false;
-
-	transform(command.begin(), command.end(), command.begin(), ::tolower);
-	if (command == "join") {
-		this->JoinPlayer(player);
+		for (size_t i = 0; i < game.players.size(); i++)
+		{
+			game.players[i]->write_Client(player->get_name() + " has joined the game\r\n");
+		}
 	}
-	else if (command == "start-game") {
-		this->StartGame(player);
-		while (!gameOver) {
-			if (players.size() == 2) {
-				this->CharacterSelection2P(player);
+	else {
+		player->write_Client("Game already started.\r\n");
+	}
+}
+void StartGame(shared_ptr<Player> player, Game& game) {
+	if (game.players.size() > 1 && !game.playing) {
+		bool gameOver = false;
+		game.playing = true;
+
+		// Shuffle decks
+		game.buildingsDeck.shuffle();
+		game.charactersDeck.shuffle();
+
+		for (size_t i = 0; i < game.players.size(); i++)
+		{
+			game.players[i]->write_Client("Game has started. Good luck!\r\n");
+			game.players[i]->set_Coins(2);
+
+			for (int j = 0; j < 4; j++) {
+				game.players[i]->buildingCards.add_Card(move(game.buildingsDeck[0]));
+				game.buildingsDeck.remove_Card(0);
 			}
-			if (players.size() == 3) {
-				this->CharacterSelection3P(player);
+		}
+		game.players[0]->set_King(true);
+		game.players[0]->write_Client("You are the King. You may start the game.\r\n");
+
+		while (!gameOver) {
+			if (game.players.size() == 2) {
+				game.CharacterSelection2P(player);
+			}
+			if (game.players.size() == 3) {
+				game.CharacterSelection3P(player);
 			}
 
 			for (int i = 1; i <= CharacterType::WARLORD; i++)
 			{
 				CharacterType type = static_cast<CharacterType>(i);
-				if (allCharacters[type]->get_owner() == nullptr) {
+				if (game.allCharacters[type]->get_owner() == nullptr) {
 					continue;
 				}
 
-				currentPlayer = allCharacters[type]->get_owner();
-				if (!allCharacters[type]->get_alive()) {
-					currentPlayer->write_Client(allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
-					currentPlayer->readline();
+				game.currentPlayer = game.allCharacters[type]->get_owner();
+				if (!game.allCharacters[type]->get_alive()) {
+					game.currentPlayer->write_Client(game.allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
+					game.currentPlayer->readline();
 				}
 				else {
-					if (dynamic_pointer_cast<CharacterCard>(currentPlayer->characterCards[type])->get_beenStolen()) {
-						currentPlayer->write_Client("You have been stolen by the thief!\r\n");
-						currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
+					if (dynamic_pointer_cast<CharacterCard>(game.currentPlayer->characterCards[type])->get_beenStolen()) {
+						game.currentPlayer->write_Client("You have been stolen by the thief!\r\n");
+						game.currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
 
-						shared_ptr<Player> thief = allCharacters[CharacterType::THIEF]->get_owner();
-						thief->set_Coins(currentPlayer->get_Coins());
-						currentPlayer->set_Coins(-currentPlayer->get_Coins());
-						currentPlayer->readline();
+						shared_ptr<Player> thief = game.allCharacters[CharacterType::THIEF]->get_owner();
+						thief->set_Coins(game.currentPlayer->get_Coins());
+						game.currentPlayer->set_Coins(-game.currentPlayer->get_Coins());
+						game.currentPlayer->readline();
 					}
 
-					currentPlayer->characterCards[type]->set_visible(true);
-					onTableDeck.add_Card(currentPlayer->characterCards[type]);
+					game.currentPlayer->characterCards[type]->set_visible(true);
+					game.onTableDeck.add_Card(game.currentPlayer->characterCards[type]);
 
-					this->PlayTurn(ToString(type));
-					if (currentPlayer->playerField.size() >= 8) {
+					game.PlayTurn(ToString(type));
+					if (game.currentPlayer->playerField.size() >= 8) {
 						if (!gameOver) {
-							currentPlayer->set_FirsToEight(true);
+							game.currentPlayer->set_FirsToEight(true);
 						}
 						gameOver = true;
 					}
 				}
 			}
 		}
-		CalculateWinner();
-		GameReset();
+		game.CalculateWinner();
+		game.GameReset();
 	}
-	else if (command == "help") {
-		this->Help(player);
-	}
-}
-
-void Game::JoinPlayer(shared_ptr<Player> player) {
-	if (!this->playing) {
-		this->players.push_back(player);
-
-		for (size_t i = 0; i < players.size(); i++)
-		{
-			players[i]->write_Client(player->get_name() + " has joined the game\r\n");
-		}
-	} else {
-		player->write_Client("Game already started.\r\n");
-	}
-}
-
-void Game::StartGame(shared_ptr<Player> player) {
-	if (players.size() > 1 && !this->playing) {
-		this->playing = true;
-
-		// Shuffle decks
-		buildingsDeck.shuffle();
-		charactersDeck.shuffle();
-
-		for (size_t i = 0; i < players.size(); i++)
-		{
-			players[i]->write_Client("Game has started. Good luck!\r\n");
-			players[i]->set_Coins(2);
-
-			for (int j = 0; j < 4; j++) {
-				players[i]->buildingCards.add_Card(move(buildingsDeck[0]));
-				buildingsDeck.remove_Card(0);
-			}
-		}
-		players[0]->set_King(true);
-		players[0]->write_Client("You are the King. You may start the game.\r\n");
-	}
-	else if (players.size() == 0) {
+	else if (game.players.size() == 0) {
 		player->write_Client("You must join first before you can start a game.\r\n");
 	}
-	else if (playing) {
+	else if (game.playing) {
 		player->write_Client("Game already started.\r\n");
 	}
 	else {
 		player->write_Client("Not enough players to start a game.\r\n");
 	}
+}
+void Help(shared_ptr<Player> player, Game& game) {
+	player->write_Client("Game turn:\r\n");
+	player->write_Client("Income: Take 2 gold pieces or take 2 build cards and put 1 back.\r\n");
+	player->write_Client("Building: Place one build card on your playfield and pay the amount of gold required to the bank.\r\n");
+	player->write_Client("Character Specialty: You can activate your characters special ability at any time.\r\n\r\n");
+
+	player->write_Client("Characters:\r\n");
+	player->write_Client("1. Assasin: Kill any other character.\r\n");
+	player->write_Client("2. Thief: Steal gold from another player.\r\n");
+	player->write_Client("3. Magician: Trade all your buildcards with another all buildcards of anoher player.\r\n");
+	player->write_Client("4. King: Start next round, Recieves gold from monuments.\r\n");
+	player->write_Client("5. Pedo: Is protected against the Warlord, Recieves gold from church buildings.\r\n");
+	player->write_Client("6. Merchant: Recieves one extra gold, Recieves gold from commercial buildings.\r\n");
+	player->write_Client("7. Architect: Draws 2 extra building cards, Can build up to 3 buildings in one turn.\r\n");
+	player->write_Client("8. Warlord: Destroy any building, Recieves gold from military buildings.\r\n");
+}
+
+Game::Game()
+{
+	m["join"] = &JoinPlayer;
+	m["start-game"] = &StartGame;
+	m["help"] = &Help;
+
+	srand(time(0));
+	FillCharactersDeck();
+	FillBuildingsDeck();
+}
+
+void Game::HandleCommand(shared_ptr<Player> player, string command) {
+	transform(command.begin(), command.end(), command.begin(), ::tolower);
+	call_script(command, player);
 }
 
 void Game::CharacterSelection2P(shared_ptr<Player> player) {
@@ -387,9 +399,6 @@ void Game::ShowBoard() {
 
 		currentPlayer->write_Client("Plays as: \r\n\r\n");
 		for (size_t x = 0; x < players[i]->characterCards.size(); x++) {
-			// Als de speler zijn character nog gesloten zijn omdat hij nog niet aan de beurt is 
-			// geweest dan wordt er not available geprint.
-			
 
 			if (players[i]->characterCards[x]->get_visible())
 			{
@@ -642,23 +651,6 @@ void Game::FillCharactersDeck() {
 	{
 		charactersDeck.add_Card(allCharacters[static_cast<CharacterType>(i)]);
 	}
-}
-
-void Game::Help(shared_ptr<Player> player) {
-	player->write_Client("Game turn:\r\n");
-	player->write_Client("Income: Take 2 gold pieces or take 2 build cards and put 1 back.\r\n");
-	player->write_Client("Building: Place one build card on your playfield and pay the amount of gold required to the bank.\r\n");
-	player->write_Client("Character Specialty: You can activate your characters special ability at any time.\r\n\r\n");
-
-	player->write_Client("Characters:\r\n");
-	player->write_Client("1. Assasin: Kill any other character.\r\n");
-	player->write_Client("2. Thief: Steal gold from another player.\r\n");
-	player->write_Client("3. Magician: Trade all your buildcards with another all buildcards of anoher player.\r\n");
-	player->write_Client("4. King: Start next round, Recieves gold from monuments.\r\n");
-	player->write_Client("5. Pedo: Is protected against the Warlord, Recieves gold from church buildings.\r\n");
-	player->write_Client("6. Merchant: Recieves one extra gold, Recieves gold from commercial buildings.\r\n");
-	player->write_Client("7. Architect: Draws 2 extra building cards, Can build up to 3 buildings in one turn.\r\n");
-	player->write_Client("8. Warlord: Destroy any building, Recieves gold from military buildings.\r\n");
 }
 
 Game::~Game()

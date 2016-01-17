@@ -36,10 +36,25 @@ class Game : public ISubject
 {
 public:
 	Game();
+
+	// Functions map
+	typedef void(*FunctionsMap)(shared_ptr<Player>, Game& game);
+	typedef map<string, FunctionsMap> functions_map;
+
+	functions_map m;
+	void call_script(const std::string& pFunction, shared_ptr<Player> player)
+	{
+		functions_map::const_iterator iter = m.find(pFunction);
+		if (iter == m.end())
+		{
+			player->write_Client("Function not found! Please try again!\r\n");
+		}
+		else {
+			(*iter->second)(player, *this);
+		}
+	}
+
 	void HandleCommand(shared_ptr<Player> player, string command);
-	void JoinPlayer(shared_ptr<Player> player);
-	void StartGame(shared_ptr<Player> player);
-	void Help(shared_ptr<Player> player);
 	void PlayTurn(string type);
 
 	void CharacterSelection2P(shared_ptr<Player> player);
