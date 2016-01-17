@@ -36,6 +36,7 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 		game.players[0]->write_Client("You are the King. You may start the game.\r\n");
 
 		while (!gameOver) {
+			
 			if (game.players.size() == 2) {
 				game.CharacterSelection2P(player);
 			}
@@ -77,6 +78,7 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 						gameOver = true;
 					}
 				}
+				game.WriteGameStatus();
 			}
 		}
 		game.CalculateWinner();
@@ -108,12 +110,28 @@ void Help(shared_ptr<Player> player, Game& game) {
 	player->write_Client("7. Architect: Draws 2 extra building cards, Can build up to 3 buildings in one turn.\r\n");
 	player->write_Client("8. Warlord: Destroy any building, Recieves gold from military buildings.\r\n");
 }
+void LoadGame(shared_ptr<Player> player, Game& game) {
+	if (game.players.size() > 1 && !game.playing) {
+		ifstream file2{ "data.txt" };
+		file2 >> game;
+	}
+	else if (game.players.size() == 0) {
+		player->write_Client("You must join first before you can load a game.\r\n");
+	}
+	else if (game.playing) {
+		player->write_Client("Game already started.\r\n");
+	}
+	else {
+		player->write_Client("Not enough players to load a game.\r\n");
+	}
+}
 
 Game::Game()
 {
 	m["join"] = &JoinPlayer;
 	m["start-game"] = &StartGame;
 	m["help"] = &Help;
+	m["load-game"] = &LoadGame;
 
 	srand(time(0));
 	FillCharactersDeck();
@@ -651,6 +669,11 @@ void Game::FillCharactersDeck() {
 	{
 		charactersDeck.add_Card(allCharacters[static_cast<CharacterType>(i)]);
 	}
+}
+
+void Game::WriteGameStatus() {
+	ofstream file{ "data.txt" };
+	file << *this;
 }
 
 Game::~Game()

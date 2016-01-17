@@ -45,6 +45,20 @@ public:
 	void set_Points(int amount) { this->points += amount; }
 	int get_Points() { return this->points; }
 
+	friend ostream& operator<<(ostream& strm, const Player& player) {
+		strm << player.name << endl;
+		strm << player.coins << endl;
+		strm << player.points << endl;
+		strm << player.isKing << endl;
+		strm << player.firstToEight << endl;
+
+		strm << "BuildingCards" << endl << player.buildingCards << "EndBuildingCards" << endl;
+		strm << "CharacterCards" << endl << player.characterCards << "EndCharacterCards" << endl;
+		strm << "PlayerField" << endl << player.playerField << "EndPlayerField" << endl;
+
+		return strm;
+	}
+
 	// Decks
 	Deck buildingCards;
 	Deck characterCards;

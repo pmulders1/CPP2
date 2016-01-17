@@ -20,5 +20,7 @@ void ISubject::ClearObservers()
 
 void ISubject::Notify(string command, Game game)
 {
-	observers[command].first->execute(game);
+	if (observers[command].first != nullptr && observers[command].second != nullptr) {
+		observers[command].first->execute(game);
+	}
 }

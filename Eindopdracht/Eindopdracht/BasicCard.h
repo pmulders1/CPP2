@@ -26,6 +26,12 @@ public:
 
 	CharacterType get_type() const { return type; }
 
+	friend ostream& operator<<(ostream& strm, const BasicCard& card) {
+		strm << card.get_name();
+
+		return strm;
+	}
+
 private:
 	string name;
 	string discription;

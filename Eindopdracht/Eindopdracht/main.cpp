@@ -9,7 +9,7 @@
 /*
 TODO:
 	1. Exception handling waar?
-	2. Shuffle is niet random
+	2. Shuffle is niet random - Voor bart
 
 VRAGEN:
 */

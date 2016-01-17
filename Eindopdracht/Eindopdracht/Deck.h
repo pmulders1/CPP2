@@ -28,6 +28,16 @@ public:
 		return nullptr;
 	}
 
+	friend ostream& operator<<(ostream& strm, const Deck& deck) {
+
+		for (size_t i = 0; i < deck.deck.size(); i++)
+		{
+			strm << *deck.deck[i] << endl;
+		}
+
+		return strm;
+	}
+
 	vector<shared_ptr<BasicCard>> deck;
 	~Deck();
 };

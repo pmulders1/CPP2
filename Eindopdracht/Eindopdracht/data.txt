@@ -1,0 +1,41 @@
+playing 1
+current paul
+count 2
+BeginPlayer
+quinn
+5
+0
+1
+0
+BuildingCards
+Castle
+Temple
+Magicians School
+EndBuildingCards
+CharacterCards
+Merchant
+Architect
+EndCharacterCards
+PlayerField
+Cathedral
+EndPlayerField
+EndPlayer
+BeginPlayer
+paul
+3
+0
+0
+0
+BuildingCards
+Monastery
+Dragonsgate
+Workshop
+EndBuildingCards
+CharacterCards
+Bishop
+Warlord
+EndCharacterCards
+PlayerField
+Estate
+EndPlayerField
+EndPlayer

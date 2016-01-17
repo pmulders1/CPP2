@@ -8,6 +8,8 @@
 #include <ctime>
 #include <vector>
 #include <map>
+#include <iostream>
+#include <fstream>
 #include "Deck.h"
 #include "BuildingCard.h"
 #include "AssasinCard.h"
@@ -79,6 +81,42 @@ public:
 	shared_ptr<BuildingCard> tempCard;
 	vector<shared_ptr<BuildingCard>> notifyCards;
 	
+	// Wegschrijven van GameStatus
+	void WriteGameStatus();
+	friend ostream& operator<<(ostream& strm, const Game& game) {
+		strm << "playing " << game.playing << endl;
+
+		strm << "current " << game.currentPlayer.get()->get_name() << endl;
+
+		strm << "count " << game.players.size() << endl;
+
+		for (size_t i = 0; i < game.players.size(); i++)
+		{
+			strm << "BeginPlayer" << endl << *game.players[i] << "EndPlayer" << endl;
+		}
+
+		return strm;
+	}
+	friend istream& operator>>(istream& strm, Game& game) {
+		bool playing;
+		string omschrijving;
+		string currentPlayer;
+		string playerCount;
+
+		strm >> omschrijving >> playing >> omschrijving >> currentPlayer >> omschrijving >> playerCount;
+		if (stoi(playerCount) != game.players.size()) {
+			for (size_t i = 0; i < game.players.size(); i++)
+			{
+				game.players[i]->write_Client("Not the right amount of players to load a game!");
+			}
+			return strm;
+		}
+		
+		game.playing = playing;
+		return strm;
+	}
+
+
 	shared_ptr<Player> currentPlayer;
 
 	bool playing = false;
