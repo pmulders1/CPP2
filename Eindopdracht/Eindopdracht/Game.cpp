@@ -113,7 +113,12 @@ void Help(shared_ptr<Player> player, Game& game) {
 void LoadGame(shared_ptr<Player> player, Game& game) {
 	if (game.players.size() > 1 && !game.playing) {
 		ifstream file2{ "data.txt" };
-		file2 >> game;
+		try{
+			file2 >> game;
+		}
+		catch (...) {
+			throw exception("Corrupte save file. Unable to load game");
+		}
 	}
 	else if (game.players.size() == 0) {
 		player->write_Client("You must join first before you can load a game.\r\n");
@@ -674,6 +679,99 @@ void Game::FillCharactersDeck() {
 void Game::WriteGameStatus() {
 	ofstream file{ "data.txt" };
 	file << *this;
+}
+
+void Game::ClaimBuildingCards(istream& strm, Player& player){
+	string omschrijving;
+	strm >> omschrijving;
+	string cardName;
+	strm >> cardName;
+	// door alle kaarten van een speler in de save file loopen
+	while (cardName != "EndBuildingCards") {
+
+		bool found = false;
+
+		// door alle beschikbare kaarten loopen en reserveren.
+		for (size_t b = 0; b < this->buildingsDeck.size(); b++)
+		{
+			if (this->buildingsDeck[b]->get_name() == cardName) {
+				found = true;
+				// reserveren
+				player.buildingCards.add_Card(this->buildingsDeck[b]);
+				this->buildingsDeck.remove_Card(b);
+				break;
+			}
+		}
+		// Kaart is niet gevonden. melding geven.
+		if (!found) {
+			throw exception("Invalid save file. One of the building cards is either already taken or does not excist.");
+		}
+
+		// verzetten naar de volgende kaart
+		strm >> cardName;
+	}
+}
+
+void Game::ClaimCharacterCards(istream& strm, Player& player) {
+	string omschrijving;
+	strm >> omschrijving;
+	string cardName;
+	strm >> cardName;
+	// door alle kaarten van een speler in de save file loopen
+	while (cardName != "EndCharacterCards") {
+
+		bool found = false;
+
+		// door alle beschikbare kaarten loopen en reserveren.
+		for (size_t b = 0; b < this->charactersDeck.size(); b++)
+		{
+			if (this->charactersDeck[b]->get_name() == cardName) {
+				found = true;
+				// reserveren
+				player.characterCards.add_Card(this->charactersDeck[b]);
+				this->charactersDeck.remove_Card(b);
+				break;
+			}
+		}
+		// Kaart is niet gevonden. melding geven.
+		if (!found) {
+			throw exception("Invalid save file. One of the building cards is either already taken or does not excist.");
+		}
+
+		// verzetten naar de volgende kaart
+		strm >> cardName;
+	}
+}
+
+void Game::ClaimPlayerFieldCards(istream& strm, Player& player) {
+	string omschrijving;
+	strm >> omschrijving;
+	string cardName;
+	strm >> cardName;
+	// door alle kaarten van een speler in de save file loopen
+	while (cardName != "EndPlayerField") {
+
+		bool found = false;
+
+		// door alle beschikbare kaarten loopen en reserveren.
+		for (size_t b = 0; b < this->buildingsDeck.size(); b++)
+		{
+			if (this->buildingsDeck[b]->get_name() == cardName) {
+				found = true;
+				// reserveren
+				player.playerField.add_Card(this->buildingsDeck[b]);
+				this->buildingsDeck.remove_Card(b);
+				break;
+			}
+		}
+		// Kaart is niet gevonden. melding geven.
+		if (!found) {
+			throw exception("Invalid save file. One of the building cards is either already taken or does not excist.");
+		}
+
+		// verzetten naar de volgende kaart
+		strm >> cardName;
+	}
 }
 
 Game::~Game()

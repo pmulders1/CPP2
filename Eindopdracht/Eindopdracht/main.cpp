@@ -47,6 +47,7 @@ void consume_command(Game game) // runs in its own thread
 				//*client << player->get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << machiavelli::prompt;
 			} catch (const exception& ex) {
 				cerr << "*** exception in consumer thread for player " << player->get_name() << ": " << ex.what() << '\n';
+				client->write(ex.what());
 				if (client->is_open()) {
 					client->write("Sorry, something went wrong during handling of your request.\r\n");
 				}

@@ -10,7 +10,7 @@ quinn
 BuildingCards
 Castle
 Temple
-Magicians School
+MagiciansSchool
 EndBuildingCards
 CharacterCards
 Merchant

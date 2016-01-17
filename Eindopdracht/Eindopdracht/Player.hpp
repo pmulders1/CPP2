@@ -59,6 +59,34 @@ public:
 		return strm;
 	}
 
+	friend istream& operator>>(istream& strm, Player& player) {
+		// Aanmaken benodigde variable
+		string omschrijving;
+		string name;
+		string coins;
+		string points;
+		string isKing;
+		string firstToEight;
+
+		strm >> omschrijving;
+
+		// Ophalen data uit de stream als strings
+		strm >> name;
+		strm >> coins;
+		strm >> points;
+		strm >> isKing;
+		strm >> firstToEight;
+
+		// Convert slag en opslaan in playerobject
+		player.name = name;
+		player.coins = stoi(coins);
+		player.points = stoi(points);
+		player.isKing = (stoi(isKing) == 0) ? false : true;
+		player.firstToEight = (stoi(firstToEight) == 0) ? false : true;
+
+		return strm;
+	}
+
 	// Decks
 	Deck buildingCards;
 	Deck characterCards;

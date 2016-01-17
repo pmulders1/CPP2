@@ -83,16 +83,21 @@ public:
 	
 	// Wegschrijven van GameStatus
 	void WriteGameStatus();
+
+	void ClaimBuildingCards(istream& strm, Player& player);
+	void ClaimCharacterCards(istream& strm, Player& player);
+	void ClaimPlayerFieldCards(istream& strm, Player& player);
+
 	friend ostream& operator<<(ostream& strm, const Game& game) {
-		strm << "playing " << game.playing << endl;
+		strm << "GameIsPlaying: " << game.playing << endl;
 
-		strm << "current " << game.currentPlayer.get()->get_name() << endl;
+		strm << "CurrentPlayer: " << game.currentPlayer.get()->get_name() << endl;
 
-		strm << "count " << game.players.size() << endl;
+		strm << "PlayerCount: " << game.players.size() << endl;
 
 		for (size_t i = 0; i < game.players.size(); i++)
 		{
-			strm << "BeginPlayer" << endl << *game.players[i] << "EndPlayer" << endl;
+			strm << "BeginPlayer:" << endl << *game.players[i] << ":EndPlayer" << endl;
 		}
 
 		return strm;
@@ -103,7 +108,9 @@ public:
 		string currentPlayer;
 		string playerCount;
 
+		// Status van plaing/current player ophalen en het aantal spelers van de savegame
 		strm >> omschrijving >> playing >> omschrijving >> currentPlayer >> omschrijving >> playerCount;
+
 		if (stoi(playerCount) != game.players.size()) {
 			for (size_t i = 0; i < game.players.size(); i++)
 			{
@@ -112,10 +119,27 @@ public:
 			return strm;
 		}
 		
+		// Hoe weten we zeker dat de spelers die de game loaden dezelfde spelers zijn?.
+		// Hoe wordt deze volgorde bepaald?
+		game.FillBuildingsDeck();
+		game.FillCharactersDeck();
+		vector<shared_ptr<Player>> players;
+		
+		for (size_t i = 0; i < stoi(playerCount); i++)
+		{
+			shared_ptr<Player> temp{ new Player() };
+			strm >> *temp;
+			players.push_back(temp);
+
+			game.ClaimBuildingCards(strm, *temp);
+			game.ClaimCharacterCards(strm, *temp);
+			game.ClaimPlayerFieldCards(strm, *temp);
+			strm >> omschrijving;
+		}
+
 		game.playing = playing;
 		return strm;
 	}
-
 
 	shared_ptr<Player> currentPlayer;
 
