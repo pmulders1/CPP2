@@ -7,9 +7,18 @@
 //
 
 /*
-TODO:
+Vragen:
 	1. Exception handling waar?
 	2. Shuffle is niet random - Voor bart
+	3. Laden van een game bevat alleen nog maar een lijst van ingelade spelers. (nieuwe spelers moeten oud profiel kiezen).
+	4. Saven van een game wordt nu aan het einde van een spelers beurt gedaan. (niet tijdens character selection)
+	 
+TODO: 
+	1. Attach/Detach bij het laden van game (playerfield)
+	2. Laden van een game bevat alleen nog maar een lijst van ingelade spelers. (nieuwe spelers moeten oud profiel kiezen).
+	3. Kaart wordt wel toegewezen aan een speler tijdens het laden maar er worden geen gegevens van mee genomen.
+	4. Ontabledeck wordt nog niet mee genomen in de save/load.
+	5. Refactoren MagicianCard.cpp eventueel ook anderen.
 
 VRAGEN:
 */
