@@ -1,31 +1,32 @@
 GameIsPlaying: 1
 firstpart: 0
-secondpart: 1
+secondpart: 0
 specialpart: 1
-CurrentPlayer: p
+CurrentPlayer: q
+GameStatus: Playing
 PlayerCount: 2
 BeginPlayer:
 q
-2
+3
 0
 1
 0
 BuildingCards
-Cathedral
 Castle
 Temple
 MagiciansSchool
 EndBuildingCards
 CharacterCards
 Merchant
-Warlord
+Assasin
 EndCharacterCards
 PlayerField
+Cathedral
 EndPlayerField
 :EndPlayer
 BeginPlayer:
 p
-4
+2
 0
 0
 0
@@ -36,8 +37,8 @@ Dragonsgate
 Workshop
 EndBuildingCards
 CharacterCards
+Bishop
 Thief
-Architect
 EndCharacterCards
 PlayerField
 EndPlayerField

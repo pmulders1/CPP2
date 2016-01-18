@@ -155,6 +155,7 @@
     <ClInclude Include="Dragonsgate.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameStatus.h" />
     <ClInclude Include="Graveyard.h" />
     <ClInclude Include="IObserver.h" />
     <ClInclude Include="ISubject.h" />

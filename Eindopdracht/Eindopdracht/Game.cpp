@@ -115,6 +115,60 @@ void LoadGame(shared_ptr<Player> player, Game& game) {
 		ifstream file2{ "data.txt" };
 		try{
 			file2 >> game;
+			bool gameOver = false;
+			while (!gameOver) {
+
+				if (game.gameStatus == GameStatus::CHARACTERSELECT) {
+					if (game.players.size() == 2) {
+						game.CharacterSelection2P(player, game);
+					}
+					if (game.players.size() == 3) {
+						game.CharacterSelection3P(player, game);
+					}
+				}
+				game.gameStatus = GameStatus::PLAYING;
+				game.WriteGameStatus();
+				for (int i = 1; i <= CharacterType::WARLORD; i++)
+				{
+					CharacterType type = static_cast<CharacterType>(i);
+					if (game.allCharacters[type]->get_owner() == nullptr) {
+						continue;
+					}
+
+					game.currentPlayer = game.allCharacters[type]->get_owner();
+					if (!game.allCharacters[type]->get_alive()) {
+						game.currentPlayer->write_Client(game.allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
+						game.currentPlayer->readline();
+					}
+					else {
+						if (dynamic_pointer_cast<CharacterCard>(game.currentPlayer->characterCards[type])->get_beenStolen()) {
+							game.currentPlayer->write_Client("You have been stolen by the thief!\r\n");
+							game.currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
+
+							shared_ptr<Player> thief = game.allCharacters[CharacterType::THIEF]->get_owner();
+							thief->set_Coins(game.currentPlayer->get_Coins());
+							game.currentPlayer->set_Coins(-game.currentPlayer->get_Coins());
+							game.currentPlayer->readline();
+						}
+
+						game.currentPlayer->characterCards[type]->set_visible(true);
+						game.onTableDeck.add_Card(game.currentPlayer->characterCards[type]);
+
+						game.PlayTurn(ToString(type), game);
+
+						if (game.currentPlayer->playerField.size() >= 8) {
+							if (!gameOver) {
+								game.currentPlayer->set_FirsToEight(true);
+							}
+							gameOver = true;
+						}
+					}
+				}
+				game.gameStatus = GameStatus::CHARACTERSELECT;
+			}
+			game.CalculateWinner();
+			game.GameReset();
+
 		}
 		catch (...) {
 			throw exception("Corrupte save file. Unable to load game");
@@ -157,6 +211,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player, Game& game) {
 			break;
 		}
 	}
+	game.gameStatus = GameStatus::CHARACTERSELECT;
 	players[index]->write_Client("\u001B[2J");
 	players[index]->write_Client("The following card will be placed face down on the table: \r\n");
 	players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
@@ -258,7 +313,7 @@ void Game::CharacterSelection3P(shared_ptr<Player> player, Game& game) {
 			break;
 		}
 	}
-
+	game.gameStatus = GameStatus::CHARACTERSELECT;
 	players[index]->write_Client("The following card will be placed face down on the table: \r\n");
 	players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
 
@@ -312,7 +367,7 @@ void Game::CharacterSelection3P(shared_ptr<Player> player, Game& game) {
 
 void Game::PlayTurn(string type, Game& game) {
 	bool skipturn = false;
-
+	game.gameStatus = GameStatus::PLAYING;
 	while ((firstpart && secondpart && specialpart) || !skipturn) {
 
 		currentPlayer->write_Client("\u001B[2J");
@@ -686,7 +741,7 @@ void Game::WriteGameStatus() {
 	file << *this;
 }
 
-void Game::ClaimBuildingCards(istream& strm, Player& player){
+void Game::ClaimBuildingCards(istream& strm, shared_ptr<Player> player){
 	string omschrijving;
 	strm >> omschrijving;
 	string cardName;
@@ -702,7 +757,7 @@ void Game::ClaimBuildingCards(istream& strm, Player& player){
 			if (this->buildingsDeck[b]->get_name() == cardName) {
 				found = true;
 				// reserveren
-				player.buildingCards.add_Card(this->buildingsDeck[b]);
+				player->buildingCards.add_Card(this->buildingsDeck[b]);
 				this->buildingsDeck.remove_Card(b);
 				break;
 			}
@@ -717,7 +772,7 @@ void Game::ClaimBuildingCards(istream& strm, Player& player){
 	}
 }
 
-void Game::ClaimCharacterCards(istream& strm, Player& player) {
+void Game::ClaimCharacterCards(istream& strm, shared_ptr<Player> player) {
 	string omschrijving;
 	strm >> omschrijving;
 	string cardName;
@@ -733,7 +788,8 @@ void Game::ClaimCharacterCards(istream& strm, Player& player) {
 			if (this->charactersDeck[b]->get_name() == cardName) {
 				found = true;
 				// reserveren
-				player.characterCards.add_Card(this->charactersDeck[b]);
+				allCharacters[charactersDeck[b]->get_type()]->set_owner(player);
+				player->characterCards.add_Card(this->charactersDeck[b]);
 				this->charactersDeck.remove_Card(b);
 				break;
 			}
@@ -748,7 +804,7 @@ void Game::ClaimCharacterCards(istream& strm, Player& player) {
 	}
 }
 
-void Game::ClaimPlayerFieldCards(istream& strm, Player& player) {
+void Game::ClaimPlayerFieldCards(istream& strm, shared_ptr<Player> player) {
 	string omschrijving;
 	strm >> omschrijving;
 	string cardName;
@@ -764,7 +820,7 @@ void Game::ClaimPlayerFieldCards(istream& strm, Player& player) {
 			if (this->buildingsDeck[b]->get_name() == cardName) {
 				found = true;
 				// reserveren
-				player.playerField.add_Card(this->buildingsDeck[b]);
+				player->playerField.add_Card(this->buildingsDeck[b]);
 				this->buildingsDeck.remove_Card(b);
 				break;
 			}

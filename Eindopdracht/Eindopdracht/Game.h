@@ -31,6 +31,7 @@
 #include "Workshop.h"
 #include "Obversatorium.h"
 #include "ISubject.h"
+#include "GameStatus.h"
 
 using namespace std;
 
@@ -84,9 +85,9 @@ public:
 	// Wegschrijven van GameStatus
 	void WriteGameStatus();
 
-	void ClaimBuildingCards(istream& strm, Player& player);
-	void ClaimCharacterCards(istream& strm, Player& player);
-	void ClaimPlayerFieldCards(istream& strm, Player& player);
+	void ClaimBuildingCards(istream& strm, shared_ptr<Player> player);
+	void ClaimCharacterCards(istream& strm, shared_ptr<Player> player);
+	void ClaimPlayerFieldCards(istream& strm, shared_ptr<Player> player);
 
 	friend ostream& operator<<(ostream& strm, const Game& game) {
 		strm << "GameIsPlaying: " << game.playing << endl;
@@ -98,6 +99,8 @@ public:
 		strm << "specialpart: " << game.specialpart << endl;
 
 		strm << "CurrentPlayer: " << game.currentPlayer.get()->get_name() << endl;
+
+		strm << "GameStatus: " << ToStringGameStatus(game.gameStatus) << endl;
 
 		strm << "PlayerCount: " << game.players.size() << endl;
 
@@ -113,13 +116,14 @@ public:
 		bool firstpart;
 		bool secondpart;
 		bool specialpart;
+		string status;
 		string currentPlayer;
 		string playerCount;
 
 		string omschrijving;
 
 		// Status van plaing/current player ophalen en het aantal spelers van de savegame
-		strm >> omschrijving >> playing >> omschrijving >> firstpart >> omschrijving >> secondpart >> omschrijving >> specialpart >> omschrijving >> currentPlayer >> omschrijving >> playerCount;
+		strm >> omschrijving >> playing >> omschrijving >> firstpart >> omschrijving >> secondpart >> omschrijving >> specialpart >> omschrijving >> currentPlayer >> omschrijving >> status >> omschrijving >> playerCount;
 
 		if (stoi(playerCount) != game.players.size()) {
 			for (size_t i = 0; i < game.players.size(); i++)
@@ -136,15 +140,12 @@ public:
 		
 		for (size_t i = 0; i < stoi(playerCount); i++)
 		{
-			shared_ptr<Player> temp{ new Player() };
-			strm >> *temp;
-			temp->set_Client(move(game.players[i]->get_Client()));
+			strm >> *game.players[i];
 
-			game.ClaimBuildingCards(strm, *temp);
-			game.ClaimCharacterCards(strm, *temp);
-			game.ClaimPlayerFieldCards(strm, *temp);
+			game.ClaimBuildingCards(strm, game.players[i]);
+			game.ClaimCharacterCards(strm, game.players[i]);
+			game.ClaimPlayerFieldCards(strm, game.players[i]);
 			
-			game.players[i] = temp;
 			if (game.players[i]->get_name() == currentPlayer) {
 				game.currentPlayer = game.players[i];
 			}
@@ -156,8 +157,11 @@ public:
 		game.firstpart = firstpart;
 		game.secondpart = secondpart;
 		game.specialpart = specialpart;
+		game.gameStatus = ToEnumGameStatus(status);
 		return strm;
 	}
+
+	GameStatus gameStatus = GameStatus::PLAYING;
 
 	shared_ptr<Player> currentPlayer;
 
