@@ -1,41 +1,44 @@
-playing 1
-current paul
-count 2
-BeginPlayer
-quinn
-5
+GameIsPlaying: 1
+firstpart: 0
+secondpart: 1
+specialpart: 1
+CurrentPlayer: p
+PlayerCount: 2
+BeginPlayer:
+q
+2
 0
 1
 0
 BuildingCards
+Cathedral
 Castle
 Temple
 MagiciansSchool
 EndBuildingCards
 CharacterCards
 Merchant
-Architect
+Warlord
 EndCharacterCards
 PlayerField
-Cathedral
 EndPlayerField
-EndPlayer
-BeginPlayer
-paul
-3
+:EndPlayer
+BeginPlayer:
+p
+4
 0
 0
 0
 BuildingCards
+Estate
 Monastery
 Dragonsgate
 Workshop
 EndBuildingCards
 CharacterCards
-Bishop
-Warlord
+Thief
+Architect
 EndCharacterCards
 PlayerField
-Estate
 EndPlayerField
-EndPlayer
+:EndPlayer

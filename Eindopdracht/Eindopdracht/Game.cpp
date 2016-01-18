@@ -38,12 +38,12 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 		while (!gameOver) {
 			
 			if (game.players.size() == 2) {
-				game.CharacterSelection2P(player);
+				game.CharacterSelection2P(player, game);
 			}
 			if (game.players.size() == 3) {
-				game.CharacterSelection3P(player);
+				game.CharacterSelection3P(player, game);
 			}
-
+			game.WriteGameStatus();
 			for (int i = 1; i <= CharacterType::WARLORD; i++)
 			{
 				CharacterType type = static_cast<CharacterType>(i);
@@ -70,7 +70,8 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 					game.currentPlayer->characterCards[type]->set_visible(true);
 					game.onTableDeck.add_Card(game.currentPlayer->characterCards[type]);
 
-					game.PlayTurn(ToString(type));
+					game.PlayTurn(ToString(type), game);
+					
 					if (game.currentPlayer->playerField.size() >= 8) {
 						if (!gameOver) {
 							game.currentPlayer->set_FirsToEight(true);
@@ -78,7 +79,6 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 						gameOver = true;
 					}
 				}
-				game.WriteGameStatus();
 			}
 		}
 		game.CalculateWinner();
@@ -148,7 +148,7 @@ void Game::HandleCommand(shared_ptr<Player> player, string command) {
 	call_script(command, player);
 }
 
-void Game::CharacterSelection2P(shared_ptr<Player> player) {
+void Game::CharacterSelection2P(shared_ptr<Player> player, Game& game) {
 	this->CharacterReset();
 	int index = 0;
 	for (; index < players.size(); index++)
@@ -210,6 +210,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player) {
 				valid = false;
 			}
 		}
+		game.WriteGameStatus();
 		if (!first) {
 			bool valid = false;
 			while (!valid) {
@@ -238,6 +239,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player) {
 				}
 			}
 		}
+		game.WriteGameStatus();
 		first = false;
 
 		index++;
@@ -247,7 +249,7 @@ void Game::CharacterSelection2P(shared_ptr<Player> player) {
 	}
 }
 
-void Game::CharacterSelection3P(shared_ptr<Player> player) {
+void Game::CharacterSelection3P(shared_ptr<Player> player, Game& game) {
 	this->CharacterReset();
 	int index = 0;
 	for (; index < players.size(); index++)
@@ -297,6 +299,7 @@ void Game::CharacterSelection3P(shared_ptr<Player> player) {
 				valid = false;
 			}
 		}
+		game.WriteGameStatus();
 		index++;
 		if (index > players.size() - 1) {
 			index = 0;
@@ -307,10 +310,7 @@ void Game::CharacterSelection3P(shared_ptr<Player> player) {
 	charactersDeck.remove_Card(0);
 }
 
-void Game::PlayTurn(string type) {
-	bool firstpart = true;
-	bool secondpart = true;
-	bool specialpart = true;
+void Game::PlayTurn(string type, Game& game) {
 	bool skipturn = false;
 
 	while ((firstpart && secondpart && specialpart) || !skipturn) {
@@ -409,7 +409,11 @@ void Game::PlayTurn(string type) {
 				valid = false;
 			}
 		}
+		game.WriteGameStatus();
 	}
+	firstpart = true;
+	secondpart = true;
+	specialpart = true;
 }
 
 void Game::ShowBoard() {
@@ -677,7 +681,8 @@ void Game::FillCharactersDeck() {
 }
 
 void Game::WriteGameStatus() {
-	ofstream file{ "data.txt" };
+	remove("data.txt");
+	ofstream file{ "data.txt",  ios::in | ios::out | ios::trunc };
 	file << *this;
 }
 

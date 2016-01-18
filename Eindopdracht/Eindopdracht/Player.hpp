@@ -26,6 +26,7 @@ public:
 
 	// Zelf gemaakte shit
 	void set_Client(const shared_ptr<Socket> new_client) { client = new_client; }
+	shared_ptr<Socket> get_Client() const { return client; }
 	void write_Client(const string str) { *client << str; }
 	string readline() { return client->readline(); }
 	void Reset();

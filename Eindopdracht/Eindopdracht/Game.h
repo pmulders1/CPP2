@@ -57,10 +57,10 @@ public:
 	}
 
 	void HandleCommand(shared_ptr<Player> player, string command);
-	void PlayTurn(string type);
+	void PlayTurn(string type, Game& game);
 
-	void CharacterSelection2P(shared_ptr<Player> player);
-	void CharacterSelection3P(shared_ptr<Player> player);
+	void CharacterSelection2P(shared_ptr<Player> player, Game& game);
+	void CharacterSelection3P(shared_ptr<Player> player, Game& game);
 	void CharacterReset();
 	void GameReset();
 	void FillCharactersDeck();
@@ -91,6 +91,12 @@ public:
 	friend ostream& operator<<(ostream& strm, const Game& game) {
 		strm << "GameIsPlaying: " << game.playing << endl;
 
+		strm << "firstpart: " << game.firstpart << endl;
+
+		strm << "secondpart: " << game.secondpart << endl;
+
+		strm << "specialpart: " << game.specialpart << endl;
+
 		strm << "CurrentPlayer: " << game.currentPlayer.get()->get_name() << endl;
 
 		strm << "PlayerCount: " << game.players.size() << endl;
@@ -104,12 +110,16 @@ public:
 	}
 	friend istream& operator>>(istream& strm, Game& game) {
 		bool playing;
-		string omschrijving;
+		bool firstpart;
+		bool secondpart;
+		bool specialpart;
 		string currentPlayer;
 		string playerCount;
 
+		string omschrijving;
+
 		// Status van plaing/current player ophalen en het aantal spelers van de savegame
-		strm >> omschrijving >> playing >> omschrijving >> currentPlayer >> omschrijving >> playerCount;
+		strm >> omschrijving >> playing >> omschrijving >> firstpart >> omschrijving >> secondpart >> omschrijving >> specialpart >> omschrijving >> currentPlayer >> omschrijving >> playerCount;
 
 		if (stoi(playerCount) != game.players.size()) {
 			for (size_t i = 0; i < game.players.size(); i++)
@@ -123,27 +133,38 @@ public:
 		// Hoe wordt deze volgorde bepaald?
 		game.FillBuildingsDeck();
 		game.FillCharactersDeck();
-		vector<shared_ptr<Player>> players;
 		
 		for (size_t i = 0; i < stoi(playerCount); i++)
 		{
 			shared_ptr<Player> temp{ new Player() };
 			strm >> *temp;
-			players.push_back(temp);
+			temp->set_Client(move(game.players[i]->get_Client()));
 
 			game.ClaimBuildingCards(strm, *temp);
 			game.ClaimCharacterCards(strm, *temp);
 			game.ClaimPlayerFieldCards(strm, *temp);
+			
+			game.players[i] = temp;
+			if (game.players[i]->get_name() == currentPlayer) {
+				game.currentPlayer = game.players[i];
+			}
+
 			strm >> omschrijving;
 		}
 
 		game.playing = playing;
+		game.firstpart = firstpart;
+		game.secondpart = secondpart;
+		game.specialpart = specialpart;
 		return strm;
 	}
 
 	shared_ptr<Player> currentPlayer;
 
 	bool playing = false;
+	bool firstpart = true;
+	bool secondpart = true;
+	bool specialpart = true;
 	~Game();
 };
 
