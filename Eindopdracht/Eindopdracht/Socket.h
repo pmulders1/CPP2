@@ -55,6 +55,7 @@ public:
 	ssize_t read(char *buf, size_t maxlen) const;
     char read() const;
 	std::string readline() const;
+	void clearline() const;
 
 	void write(const std::string& msg) const;
 	void write(const char *buf, size_t len) const;

@@ -2,11 +2,24 @@
 
 void JoinPlayer(shared_ptr<Player> player, Game& game) {
 	if (!game.playing) {
-		game.players.push_back(player);
+		if (std::find(game.players.begin(), game.players.end(), player) != game.players.end()) {
+			player->write_Client("Haha leuk geprobeerd!! dit mag niet nee. (probeert meer keer te joinen!) \r\n");
+		}
+		else {
+			game.players.push_back(player);
 
-		for (size_t i = 0; i < game.players.size(); i++)
-		{
-			game.players[i]->write_Client(player->get_name() + " has joined the game\r\n");
+
+			for (size_t i = 0; i < game.players.size(); i++)
+			{
+				game.players[i]->write_Client(player->get_name() + " has joined the game.\r\n");
+			}
+
+			if (game.players.size() == 1) {
+				game.players[0]->write_Client("You are the party leader type start-game or load-game to start playing.\r\n");
+			}
+			else {
+				player->write_Client(game.players[0]->get_name() + " is the party leader. Wait for the party leader to start the game\r\n");
+			}
 		}
 	}
 	else {
@@ -53,11 +66,13 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 
 				game.currentPlayer = game.allCharacters[type]->get_owner();
 				if (!game.allCharacters[type]->get_alive()) {
+					game.currentPlayer->write_Client("\u001B[2J");
 					game.currentPlayer->write_Client(game.allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
 					game.currentPlayer->readline();
 				}
 				else {
 					if (dynamic_pointer_cast<CharacterCard>(game.currentPlayer->characterCards[type])->get_beenStolen()) {
+						game.currentPlayer->write_Client("\u001B[2J");
 						game.currentPlayer->write_Client("You have been stolen by the thief!\r\n");
 						game.currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
 
@@ -138,11 +153,13 @@ void LoadGame(shared_ptr<Player> player, Game& game) {
 
 					game.currentPlayer = game.allCharacters[type]->get_owner();
 					if (!game.allCharacters[type]->get_alive()) {
+						game.currentPlayer->write_Client("\u001B[2J");
 						game.currentPlayer->write_Client(game.allCharacters[type]->get_name() + " has been killed this round so we are skipping its turn.");
 						game.currentPlayer->readline();
 					}
 					else {
 						if (dynamic_pointer_cast<CharacterCard>(game.currentPlayer->characterCards[type])->get_beenStolen()) {
+							game.currentPlayer->write_Client("\u001B[2J");
 							game.currentPlayer->write_Client("You have been stolen by the thief!\r\n");
 							game.currentPlayer->write_Client("All of your coins will be transfered to the thief!\r\n");
 
@@ -419,7 +436,7 @@ void Game::PlayTurn(string type, Game& game) {
 			currentPlayer->write_Client(to_string(i + 1) + ". " + currentPlayer->buildingCards[i]->print());
 		}
 		if (currentPlayer->buildingCards.size() == 0) {
-			currentPlayer->write_Client("No cards in hand.");
+			currentPlayer->write_Client("No cards in hand.\r\n");
 		}
 
 		string firstpartstr = firstpart ? "Available" : "Unavailable";
@@ -542,9 +559,18 @@ shared_ptr<BasicCard> Game::DrawSingleCard() {
 
 void Game::DrawCards() {
 	currentPlayer->write_Client("\u001B[2J");
+
 	currentPlayer->write_Client("Cards drawn:\r\n\r\n");
 	buildingsDeck.shuffle();
-	for (size_t i = 0; i < 2; i++) {
+	int amount = 2;
+	if (buildingsDeck.size() == 0) {
+		currentPlayer->write_Client("The deck with buildingcards is empty! \r\n");
+		return;
+	}
+	else if (buildingsDeck.size() == 1) {
+		amount = 1;
+	}
+	for (size_t i = 0; i < amount; i++) {
 		currentPlayer->write_Client(to_string(i) + ": " + buildingsDeck[i]->print());
 	}
 
@@ -582,7 +608,7 @@ void Game::CalculateWinner() {
 		scores.push_back(make_pair(this->players[i],this->players[i]->get_Points()));
 	}
 	sort(scores.begin(), scores.end(), [](const std::pair<shared_ptr<Player>, int> &left, const std::pair<shared_ptr<Player>, int> &right) {
-		return left.second < right.second;
+		return left.second > right.second;
 	});
 
 	// Berekening voor meerdere gelijke scores
@@ -596,12 +622,21 @@ void Game::CalculateWinner() {
 		}
 	}
 	sort(buildingsScores.begin(), buildingsScores.end(), [](const std::pair<shared_ptr<Player>, int> &left, const std::pair<shared_ptr<Player>, int> &right) {
-		return left.second < right.second;
+		return left.second > right.second;
 	});
 	
 	for (size_t i = 0; i < players.size(); i++)
 	{
-		players[i]->write_Client("Player " + buildingsScores[0].first->get_name() + " is the winner! The rest is a LOSER!! \r\nThank you for playing!\r\n");
+		players[i]->write_Client("\u001B[2J");
+		players[i]->write_Client("Player " + buildingsScores[0].first->get_name() + " is the winner! The rest is a LOSER!! \r\n\r\n");
+
+		players[i]->write_Client("Scoreboard: \r\n");
+		for (size_t j = 0; j < scores.size(); j++)
+		{
+			players[i]->write_Client(scores[j].first->get_name() + " scored: " + to_string(scores[j].second) + " points.\r\n");
+		}
+		
+		players[i]->write_Client("Thank you for playing!\r\n Please reconnect to the server to play again!");
 	}
 }
 
@@ -617,7 +652,7 @@ bool Game::ConstructBuildings() {
 	}
 	if (currentPlayer->buildingCards.size() == 0) {
 		currentPlayer->write_Client("No cards in hand. You can't construct any buildings.\r\n");
-		currentPlayer->write_Client("Returning to main menu.");
+		currentPlayer->write_Client("Returning to main menu.\r\n");
 		currentPlayer->readline();
 		return false;
 	}
@@ -638,7 +673,10 @@ bool Game::ConstructBuildings() {
 
 				for (int i = 0; i < currentPlayer->playerField.size(); i++)
 				{
-					currentPlayer->playerField[i]->print();
+					currentPlayer->write_Client(currentPlayer->playerField[i]->print());
+				}
+				if (currentPlayer->playerField.size() == 0) {
+					currentPlayer->write_Client("No buildings been build!\r\n");
 				}
 
 				currentPlayer->write_Client("\r\nPress any key to continue...\r\n");
@@ -653,7 +691,7 @@ bool Game::ConstructBuildings() {
 			shared_ptr<BuildingCard> card = dynamic_pointer_cast<BuildingCard>(currentPlayer->buildingCards[choice]);
 			if (card->get_points() > currentPlayer->get_Coins()) {
 				valid = false;
-				currentPlayer->write_Client("You can't afford to construct this building");
+				currentPlayer->write_Client("You can't afford to construct this building.\r\n");
 			} else {
 				if (find(notifyCards.begin(), notifyCards.end(), card) != notifyCards.end()) {
 					this->Attach(card, currentPlayer);

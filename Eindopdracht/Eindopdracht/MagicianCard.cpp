@@ -85,6 +85,10 @@ void MagicianCard::execute(Game game) {
 
 							for (int i = 0; i < amountOfCards; i++)
 							{
+								if (game.buildingsDeck.size() == 0) {
+									game.currentPlayer->write_Client("The deck with buildingcards is empty! \r\n");
+									break;
+								}
 								shared_ptr<BasicCard> card = game.DrawSingleCard();
 								game.currentPlayer->write_Client(to_string(i + 1) + ". " +card->print());
 								game.currentPlayer->buildingCards.add_Card(card);

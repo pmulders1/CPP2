@@ -129,6 +129,14 @@ char Socket::read() const
     return c;
 }
 
+void Socket::clearline() const {
+	/*char c;
+	while (ssize_t n = ::recv(sock, &c, 1, 0)) {
+		if (n == 0) throw std::runtime_error("connection closed");
+		throw_if_min1((int)n);
+	}*/
+}
+
 std::string Socket::readline() const
 {
 	// read a line: ignore '\r', stop at '\n'
@@ -140,6 +148,7 @@ std::string Socket::readline() const
 		if (c == '\n') break;
 		if (c != '\r') line += c;
 	}
+
 	return line;
 }
 

@@ -12,9 +12,13 @@ void ArchitectCard::execute(Game game) {
 	
 	shared_ptr<BasicCard> card;
 	for (int i = 0; i < 2; i++) {
+		if (game.buildingsDeck.size() == 0) {
+			game.currentPlayer->write_Client("The deck with buildingcards is empty! \r\n");
+			break;
+		}
 		card = game.DrawSingleCard();
 		game.currentPlayer->write_Client(card->print());
-		game.currentPlayer->buildingCards.add_Card(game.DrawSingleCard());
+		game.currentPlayer->buildingCards.add_Card(card);
 	}
 
 	game.currentPlayer->write_Client("Press any key to continue...\r\n");

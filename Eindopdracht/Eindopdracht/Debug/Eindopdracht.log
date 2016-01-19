@@ -1,15 +1,63 @@
-﻿  Game.cpp
+﻿  Socket.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\socket.cpp(71): warning C4068: unknown pragma
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\socket.cpp(120): warning C4018: '>=': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\socket.cpp(226): warning C4068: unknown pragma
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\socket.cpp(253): warning C4068: unknown pragma
+  Generating Code...
+  Compiling...
+  ArchitectCard.cpp
 c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(199): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(213): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(233): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(251): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(295): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(315): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(329): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(348): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(365): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(385): warning C4018: '>': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(639): warning C4018: '<': signed/unsigned mismatch
-c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(650): warning C4018: '>': signed/unsigned mismatch
+  Generating Code...
+  Compiling...
+  WarlordCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\warlordcard.cpp(31): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\warlordcard.cpp(53): warning C4018: '>': signed/unsigned mismatch
+  ThiefCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+  MerchantCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+  MagicianCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\magiciancard.cpp(40): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\magiciancard.cpp(102): warning C4018: '>': signed/unsigned mismatch
+  KingCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+  Graveyard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+  Game.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(216): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(230): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(250): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(268): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(312): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(332): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(346): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(365): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(382): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(402): warning C4018: '>': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(573): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(674): warning C4018: '<': signed/unsigned mismatch
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.cpp(688): warning C4018: '>': signed/unsigned mismatch
+  BishopCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+  AssasinCard.cpp
+c:\users\paul\documents\github\cpp2\eindopdracht\eindopdracht\game.h(167): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
+  Workshop.cpp
+  University.cpp
+  Player.cpp
+  Obversatorium.cpp
+  MagiciansSchool.cpp
+  Library.cpp
+  Labatorium.cpp
+  ISubject.cpp
+  Dungeon.cpp
+  Dragonsgate.cpp
+  CourtOfMiraclesCard.cpp
+  CharacterCard.cpp
+  BuildingCard.cpp
   Eindopdracht.vcxproj -> C:\Users\Paul\Documents\GitHub\CPP2\Eindopdracht\Debug\Eindopdracht.exe

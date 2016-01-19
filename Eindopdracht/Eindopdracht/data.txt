@@ -1,114 +1,90 @@
 GameIsPlaying: 1
 firstpart: 0
-secondpart: 1
-specialpart: 1
-CurrentPlayer: eerste
+secondpart: 0
+specialpart: 0
+CurrentPlayer: Paul
 GameStatus: Playing
-PlayerCount: 3
-GameCharIndex: 5
+PlayerCount: 2
+GameCharIndex: 4
 Charselectindex: 0
-Charcount: 6
+Charcount: 4
 Picking: 0
 SelectCard: 0
 ThrowCard: 0
 First: 1
 BeginPlayer:
-derde
-4
+Paul
+1
 0
 1
 0
 BuildingCards
+Watchtower
 Workshop
-Dungeon
 MagiciansSchool
-Church
 EndBuildingCards
 PlayerField
+Castle
 EndPlayerField
 CharacterCards
 King
 0
 1
 1
-Merchant
-0
-1
-0
-EndCharacterCards
-:EndPlayer
-BeginPlayer:
-tweede
-3
-0
-0
-0
-BuildingCards
-Market
-Library
-Stores
-EndBuildingCards
-PlayerField
-Estate
-EndPlayerField
-CharacterCards
-Thief
-0
-1
-1
-Assasin
-0
-1
-1
-EndCharacterCards
-:EndPlayer
-BeginPlayer:
-eerste
-4
-0
-0
-0
-BuildingCards
-TownHall
-Stronghold
-Port
-Dragonsgate
-EndBuildingCards
-PlayerField
-EndPlayerField
-CharacterCards
-Architect
-0
-1
-0
 Bishop
 0
 1
-1
+0
 EndCharacterCards
 :EndPlayer
-OnTableDeck
-Warlord
+BeginPlayer:
+Quinn
+0
+0
+0
+0
+BuildingCards
+Graveyard
+Estate
+Labatorium
+Warehouse
+EndBuildingCards
+PlayerField
+CourtofMiracles
+EndPlayerField
+CharacterCards
+Merchant
 0
 1
 0
 Magician
 0
 1
+1
+EndCharacterCards
+:EndPlayer
+OnTableDeck
+Thief
+0
+1
 0
 Assasin
 0
 1
+0
+Warlord
+0
 1
-Thief
+0
+Architect
+0
+1
+0
+Magician
 0
 1
 1
 King
-0
-1
-1
-Bishop
 0
 1
 1
