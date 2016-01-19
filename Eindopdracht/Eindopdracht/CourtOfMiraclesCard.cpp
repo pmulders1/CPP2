@@ -2,7 +2,7 @@
 #include "Game.h"
 #include <iostream>
 
-CourtOfMiraclesCard::CourtOfMiraclesCard() : BuildingCard("Court of Miracles", 2)
+CourtOfMiraclesCard::CourtOfMiraclesCard() : BuildingCard("CourtofMiracles", 2)
 {
 	set_special(true);
 }

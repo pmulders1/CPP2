@@ -9,6 +9,12 @@ public:
 	virtual string print() const {
 		return this->get_name() + ": " + this->get_discription() + "\r\n";
 	}
+
+	virtual ostream& data(ostream& strm) const {
+		strm << endl << get_beenStolen() << endl << get_alive() << endl << get_visible();
+		return strm;
+	}
+
 	virtual void execute(Game game) = 0;
 
 	string get_discription() const { return this->discription; }

@@ -88,6 +88,7 @@ public:
 	void ClaimBuildingCards(istream& strm, shared_ptr<Player> player);
 	void ClaimCharacterCards(istream& strm, shared_ptr<Player> player);
 	void ClaimPlayerFieldCards(istream& strm, shared_ptr<Player> player);
+	void FillOnTableDeck(istream& strm);
 
 	friend ostream& operator<<(ostream& strm, const Game& game) {
 		strm << "GameIsPlaying: " << game.playing << endl;
@@ -104,11 +105,25 @@ public:
 
 		strm << "PlayerCount: " << game.players.size() << endl;
 
+		strm << "GameCharIndex: " << game.charIndex << endl;
+
+		strm << "Charselectindex: " << game.index << endl;
+
+		strm << "Charcount: " << game.count << endl;
+
+		strm << "Picking: " << game.picking << endl;
+
+		strm << "SelectCard: " << game.selectCard << endl;
+
+		strm << "ThrowCard: " << game.throwCard << endl;
+
+		strm << "First: " << game.first << endl;
+
 		for (size_t i = 0; i < game.players.size(); i++)
 		{
 			strm << "BeginPlayer:" << endl << *game.players[i] << ":EndPlayer" << endl;
 		}
-
+		strm << "OnTableDeck" << endl << game.onTableDeck << "EndOnTableDeck" << endl;
 		return strm;
 	}
 	friend istream& operator>>(istream& strm, Game& game) {
@@ -116,14 +131,24 @@ public:
 		bool firstpart;
 		bool secondpart;
 		bool specialpart;
+		bool selectCard;
+		bool throwCard;
+		bool first;
+		bool picking;
 		string status;
 		string currentPlayer;
 		string playerCount;
+		string charSelectindex;
+		string charCount;
+		string gameCharIndex;
 
 		string omschrijving;
 
 		// Status van plaing/current player ophalen en het aantal spelers van de savegame
-		strm >> omschrijving >> playing >> omschrijving >> firstpart >> omschrijving >> secondpart >> omschrijving >> specialpart >> omschrijving >> currentPlayer >> omschrijving >> status >> omschrijving >> playerCount;
+		strm >> omschrijving >> playing >> omschrijving >> firstpart >> omschrijving >> 
+			secondpart >> omschrijving >> specialpart >> omschrijving >> currentPlayer >> omschrijving >> 
+			status >> omschrijving >> playerCount >> omschrijving >> gameCharIndex >> omschrijving >> charSelectindex >> omschrijving >> charCount >> omschrijving
+			>> picking >> omschrijving >> selectCard >> omschrijving >> throwCard >> omschrijving >> first;
 
 		if (stoi(playerCount) != game.players.size()) {
 			for (size_t i = 0; i < game.players.size(); i++)
@@ -135,16 +160,18 @@ public:
 		
 		// Hoe weten we zeker dat de spelers die de game loaden dezelfde spelers zijn?.
 		// Hoe wordt deze volgorde bepaald?
+		game.onTableDeck.clear();
 		game.FillBuildingsDeck();
 		game.FillCharactersDeck();
-		
+
 		for (size_t i = 0; i < stoi(playerCount); i++)
 		{
 			strm >> *game.players[i];
 
 			game.ClaimBuildingCards(strm, game.players[i]);
-			game.ClaimCharacterCards(strm, game.players[i]);
 			game.ClaimPlayerFieldCards(strm, game.players[i]);
+			game.ClaimCharacterCards(strm, game.players[i]);
+			
 			
 			if (game.players[i]->get_name() == currentPlayer) {
 				game.currentPlayer = game.players[i];
@@ -153,15 +180,28 @@ public:
 			strm >> omschrijving;
 		}
 
+		game.FillOnTableDeck(strm);
+
 		game.playing = playing;
 		game.firstpart = firstpart;
 		game.secondpart = secondpart;
 		game.specialpart = specialpart;
 		game.gameStatus = ToEnumGameStatus(status);
+		game.index = stoi(charSelectindex);
+		game.charIndex = stoi(gameCharIndex);
+		game.count = stoi(charCount);
+		game.picking = picking;
+		game.selectCard = selectCard;
+		game.throwCard = throwCard;
+		game.first = first;
 		return strm;
 	}
 
 	GameStatus gameStatus = GameStatus::PLAYING;
+	int index = 0;
+	int count = 0;
+	bool picking = false;
+	int charIndex = 1;
 
 	shared_ptr<Player> currentPlayer;
 
@@ -169,6 +209,9 @@ public:
 	bool firstpart = true;
 	bool secondpart = true;
 	bool specialpart = true;
+	bool selectCard = false;
+	bool throwCard = false;
+	bool first = true;
 	~Game();
 };
 

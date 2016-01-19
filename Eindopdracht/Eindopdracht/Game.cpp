@@ -44,9 +44,9 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 				game.CharacterSelection3P(player, game);
 			}
 			game.WriteGameStatus();
-			for (int i = 1; i <= CharacterType::WARLORD; i++)
+			for (game.charIndex; game.charIndex <= CharacterType::WARLORD; game.charIndex++)
 			{
-				CharacterType type = static_cast<CharacterType>(i);
+				CharacterType type = static_cast<CharacterType>(game.charIndex);
 				if (game.allCharacters[type]->get_owner() == nullptr) {
 					continue;
 				}
@@ -80,6 +80,7 @@ void StartGame(shared_ptr<Player> player, Game& game) {
 					}
 				}
 			}
+			game.charIndex = 1;
 		}
 		game.CalculateWinner();
 		game.GameReset();
@@ -128,9 +129,9 @@ void LoadGame(shared_ptr<Player> player, Game& game) {
 				}
 				game.gameStatus = GameStatus::PLAYING;
 				game.WriteGameStatus();
-				for (int i = 1; i <= CharacterType::WARLORD; i++)
+				for (game.charIndex; game.charIndex <= CharacterType::WARLORD; game.charIndex++)
 				{
-					CharacterType type = static_cast<CharacterType>(i);
+					CharacterType type = static_cast<CharacterType>(game.charIndex);
 					if (game.allCharacters[type]->get_owner() == nullptr) {
 						continue;
 					}
@@ -151,9 +152,11 @@ void LoadGame(shared_ptr<Player> player, Game& game) {
 							game.currentPlayer->readline();
 						}
 
-						game.currentPlayer->characterCards[type]->set_visible(true);
-						game.onTableDeck.add_Card(game.currentPlayer->characterCards[type]);
-
+						if (std::find(game.onTableDeck.deck.begin(), game.onTableDeck.deck.end(), game.currentPlayer->characterCards[type]) == game.onTableDeck.deck.end()) {
+							game.currentPlayer->characterCards[type]->set_visible(true);
+							game.onTableDeck.add_Card(game.currentPlayer->characterCards[type]);
+						}
+						
 						game.PlayTurn(ToString(type), game);
 
 						if (game.currentPlayer->playerField.size() >= 8) {
@@ -164,6 +167,7 @@ void LoadGame(shared_ptr<Player> player, Game& game) {
 						}
 					}
 				}
+				game.charIndex = 1;
 				game.gameStatus = GameStatus::CHARACTERSELECT;
 			}
 			game.CalculateWinner();
@@ -203,73 +207,38 @@ void Game::HandleCommand(shared_ptr<Player> player, string command) {
 }
 
 void Game::CharacterSelection2P(shared_ptr<Player> player, Game& game) {
-	this->CharacterReset();
-	int index = 0;
-	for (; index < players.size(); index++)
-	{
-		if (players[index]->get_King()) {
-			break;
+	if (!picking) {
+		this->CharacterReset();
+
+		for (; index < players.size(); index++)
+		{
+			if (players[index]->get_King()) {
+				break;
+			}
 		}
+		game.gameStatus = GameStatus::CHARACTERSELECT;
+		players[index]->write_Client("\u001B[2J");
+		players[index]->write_Client("The following card will be placed face down on the table: \r\n");
+		players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
+		players[index]->readline();
+
+		charactersDeck[0]->set_visible(false);
+		onTableDeck.add_Card(charactersDeck[0]);
+		charactersDeck.remove_Card(0);
+
+
+		count = 0;
 	}
-	game.gameStatus = GameStatus::CHARACTERSELECT;
-	players[index]->write_Client("\u001B[2J");
-	players[index]->write_Client("The following card will be placed face down on the table: \r\n");
-	players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
-	players[index]->readline();
-
-	charactersDeck[0]->set_visible(false);
-	onTableDeck.add_Card(charactersDeck[0]);
-	charactersDeck.remove_Card(0);
-
-	bool first = true;
-	int count = 0;
+	
 	while (count < players.size() * 2) {
+		picking = true;
 		currentPlayer = players[index];
 		currentPlayer->write_Client("\u001B[2J");
-		bool valid = false;
-		while (!valid) {
-			currentPlayer->write_Client("Choose one of the following Character cards:\r\n\r\n");
-			for (size_t j = 0; j < charactersDeck.size(); j++)
-			{
-				currentPlayer->write_Client(to_string(j) + ". " + charactersDeck[j]->print());
-			}
-			currentPlayer->write_Client("Select a card by number: \r\n");
-			string temp{ currentPlayer->readline() };
-
-			try {
-				int cardnr = atoi(temp.c_str());
-				if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
-					throw exception();
-				}
-				charactersDeck[cardnr]->set_visible(false);
-				currentPlayer->characterCards.add_Card(charactersDeck[cardnr]);
-				allCharacters[charactersDeck[cardnr]->get_type()]->set_owner(currentPlayer);
-
-				count++;
-
-				if (charactersDeck[cardnr]->get_type() == CharacterType::KING && !currentPlayer->get_King()) {
-					for (size_t i = 0; i < players.size(); i++)
-					{
-						if (players[i]->get_King()) {
-							players[i]->set_King(false);
-							currentPlayer->set_King(true);
-							break;
-						}
-					}
-				}
-				charactersDeck.remove_Card(cardnr);
-				valid = true;
-			}
-			catch (exception e) {
-				currentPlayer->write_Client("Invalid input. Select a card by number!\r\n");
-				valid = false;
-			}
-		}
-		game.WriteGameStatus();
-		if (!first) {
+		
+		if (!selectCard) {
 			bool valid = false;
 			while (!valid) {
-				currentPlayer->write_Client("\r\nChoose one of the following Character cards to lay down:\r\n\r\n");
+				currentPlayer->write_Client("Choose one of the following Character cards:\r\n\r\n");
 				for (size_t j = 0; j < charactersDeck.size(); j++)
 				{
 					currentPlayer->write_Client(to_string(j) + ". " + charactersDeck[j]->print());
@@ -283,14 +252,59 @@ void Game::CharacterSelection2P(shared_ptr<Player> player, Game& game) {
 						throw exception();
 					}
 					charactersDeck[cardnr]->set_visible(false);
-					onTableDeck.add_Card(charactersDeck[cardnr]);
-					charactersDeck.remove_Card(cardnr);
+					currentPlayer->characterCards.add_Card(charactersDeck[cardnr]);
+					allCharacters[charactersDeck[cardnr]->get_type()]->set_owner(currentPlayer);
 
+					count++;
+
+					if (charactersDeck[cardnr]->get_type() == CharacterType::KING && !currentPlayer->get_King()) {
+						for (size_t i = 0; i < players.size(); i++)
+						{
+							if (players[i]->get_King()) {
+								players[i]->set_King(false);
+								currentPlayer->set_King(true);
+								break;
+							}
+						}
+					}
+					charactersDeck.remove_Card(cardnr);
+					selectCard = true;
 					valid = true;
 				}
 				catch (exception e) {
 					currentPlayer->write_Client("Invalid input. Select a card by number!\r\n");
 					valid = false;
+				}
+			}
+		}
+		game.WriteGameStatus();
+		if (!first) {
+			if (!throwCard) {
+				bool valid = false;
+				while (!valid) {
+					currentPlayer->write_Client("\r\nChoose one of the following Character cards to lay down:\r\n\r\n");
+					for (size_t j = 0; j < charactersDeck.size(); j++)
+					{
+						currentPlayer->write_Client(to_string(j) + ". " + charactersDeck[j]->print());
+					}
+					currentPlayer->write_Client("Select a card by number: \r\n");
+					string temp{ currentPlayer->readline() };
+
+					try {
+						int cardnr = atoi(temp.c_str());
+						if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
+							throw exception();
+						}
+						charactersDeck[cardnr]->set_visible(false);
+						onTableDeck.add_Card(charactersDeck[cardnr]);
+						charactersDeck.remove_Card(cardnr);
+						throwCard = true;
+						valid = true;
+					}
+					catch (exception e) {
+						currentPlayer->write_Client("Invalid input. Select a card by number!\r\n");
+						valid = false;
+					}
 				}
 			}
 		}
@@ -301,57 +315,69 @@ void Game::CharacterSelection2P(shared_ptr<Player> player, Game& game) {
 		if (index > players.size() - 1) {
 			index = 0;
 		}
+		selectCard = false;
+		throwCard = false;
 	}
+	first = true;
+	picking = false;
+	index = 0;
 }
 
 void Game::CharacterSelection3P(shared_ptr<Player> player, Game& game) {
-	this->CharacterReset();
-	int index = 0;
-	for (; index < players.size(); index++)
-	{
-		if (players[index]->get_King()) {
-			break;
+	if (!picking) {
+		this->CharacterReset();
+		for (; index < players.size(); index++)
+		{
+			if (players[index]->get_King()) {
+				break;
+			}
 		}
+		game.gameStatus = GameStatus::CHARACTERSELECT;
+		players[index]->write_Client("\u001B[2J");
+		players[index]->write_Client("The following card will be placed face down on the table: \r\n");
+		players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
+
+		charactersDeck[0]->set_visible(false);
+		onTableDeck.add_Card(charactersDeck[0]);
+		charactersDeck.remove_Card(0);
+
+		// iedere speler kan 2 kaarten pakken.
+		count = 0;
 	}
-	game.gameStatus = GameStatus::CHARACTERSELECT;
-	players[index]->write_Client("The following card will be placed face down on the table: \r\n");
-	players[index]->write_Client(charactersDeck[0]->print() + "\r\n");
-
-	charactersDeck[0]->set_visible(false);
-	onTableDeck.add_Card(charactersDeck[0]);
-	charactersDeck.remove_Card(0);
-
-	// iedere speler kan 2 kaarten pakken.
-	int count = 0;
+	
 	while (count < players.size() * 2) {
+		picking = true;
 		currentPlayer = players[index];
-
-		bool valid = false;
-		while (!valid) {
-			currentPlayer->write_Client("Choose one of the following Character cards:\r\n\r\n");
-			for (size_t j = 0; j < charactersDeck.size(); j++)
-			{
-				currentPlayer->write_Client(to_string(j) + ". " + charactersDeck[j]->print());
-			}
-			currentPlayer->write_Client("Select a card by number: \r\n");
-			string temp{ currentPlayer->readline() };
-
-			try {
-				int cardnr = atoi(temp.c_str());
-				if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
-					throw exception();
+		players[index]->write_Client("\u001B[2J");
+		if (!selectCard) {
+			bool valid = false;
+			while (!valid) {
+				currentPlayer->write_Client("Choose one of the following Character cards:\r\n\r\n");
+				for (size_t j = 0; j < charactersDeck.size(); j++)
+				{
+					currentPlayer->write_Client(to_string(j) + ". " + charactersDeck[j]->print());
 				}
-				charactersDeck[cardnr]->set_visible(false);
-				currentPlayer->characterCards.add_Card(charactersDeck[cardnr]);
-				allCharacters[charactersDeck[cardnr]->get_type()]->set_owner(currentPlayer);
-				charactersDeck.remove_Card(cardnr);
-				count++;
+				currentPlayer->write_Client("Select a card by number: \r\n");
+				string temp{ currentPlayer->readline() };
 
-				valid = true;
-			}
-			catch (exception e) {
-				currentPlayer->write_Client("Invalid input. Select a card by number!\r\n");
-				valid = false;
+				try {
+					int cardnr = atoi(temp.c_str());
+					if (cardnr < 0 || cardnr > charactersDeck.size() - 1) {
+						throw exception();
+					}
+					charactersDeck[cardnr]->set_visible(false);
+					currentPlayer->characterCards.add_Card(charactersDeck[cardnr]);
+					allCharacters[charactersDeck[cardnr]->get_type()]->set_owner(currentPlayer);
+					charactersDeck.remove_Card(cardnr);
+					count++;
+
+					selectCard = true;
+					valid = true;
+				}
+				catch (exception e) {
+					currentPlayer->write_Client("Invalid input. Select a card by number!\r\n");
+					valid = false;
+				}
 			}
 		}
 		game.WriteGameStatus();
@@ -359,7 +385,10 @@ void Game::CharacterSelection3P(shared_ptr<Player> player, Game& game) {
 		if (index > players.size() - 1) {
 			index = 0;
 		}
+		selectCard = false;
 	}
+	picking = false;
+	index = 0;
 	charactersDeck[0]->set_visible(false);
 	onTableDeck.add_Card(charactersDeck[0]);
 	charactersDeck.remove_Card(0);
@@ -652,6 +681,9 @@ void Game::CharacterReset() {
 	for (int i = 1; i <= CharacterType::WARLORD; i++)
 	{
 		allCharacters[(CharacterType)i]->set_owner(nullptr);
+		allCharacters[(CharacterType)i]->set_visible(false);
+		allCharacters[(CharacterType)i]->set_beenStolen(false);
+		allCharacters[(CharacterType)i]->set_alive(true);
 	}
 	for (size_t i = 0; i < players.size(); i++)
 	{
@@ -690,7 +722,7 @@ void Game::FillBuildingsDeck() {
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Market", 2, CharacterType::MERCHANT)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Warehouse", 3, CharacterType::MERCHANT)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Port", 4, CharacterType::MERCHANT)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Town Hall", 5, CharacterType::MERCHANT)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("TownHall", 5, CharacterType::MERCHANT)});
 
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Temple", 1, CharacterType::BISHOP)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Church", 2, CharacterType::BISHOP)});
@@ -699,7 +731,7 @@ void Game::FillBuildingsDeck() {
 
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Watchtower", 1, CharacterType::WARLORD)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Prison", 2, CharacterType::WARLORD)});
-	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Tournament Field", 3, CharacterType::WARLORD)});
+	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("TournamentField", 3, CharacterType::WARLORD)});
 	buildingsDeck.add_Card(shared_ptr<BasicCard>{new BuildingCard("Stronghold", 5, CharacterType::WARLORD)});
 
 	shared_ptr<BuildingCard> gv = shared_ptr<BuildingCard>{ new Graveyard() };
@@ -776,7 +808,13 @@ void Game::ClaimCharacterCards(istream& strm, shared_ptr<Player> player) {
 	string omschrijving;
 	strm >> omschrijving;
 	string cardName;
+	bool beenStolen;
+	bool isAlive;
+	bool isVisible;
 	strm >> cardName;
+	strm >> beenStolen;
+	strm >> isAlive;
+	strm >> isVisible;
 	// door alle kaarten van een speler in de save file loopen
 	while (cardName != "EndCharacterCards") {
 
@@ -788,8 +826,13 @@ void Game::ClaimCharacterCards(istream& strm, shared_ptr<Player> player) {
 			if (this->charactersDeck[b]->get_name() == cardName) {
 				found = true;
 				// reserveren
-				allCharacters[charactersDeck[b]->get_type()]->set_owner(player);
-				player->characterCards.add_Card(this->charactersDeck[b]);
+				shared_ptr<CharacterCard> card = dynamic_pointer_cast<CharacterCard>(charactersDeck[b]);
+				card->set_beenStolen(beenStolen);
+				card->set_alive(isAlive);
+				card->set_visible(isVisible);
+
+				allCharacters[card->get_type()]->set_owner(player);
+				player->characterCards.add_Card(card);
 				this->charactersDeck.remove_Card(b);
 				break;
 			}
@@ -801,6 +844,11 @@ void Game::ClaimCharacterCards(istream& strm, shared_ptr<Player> player) {
 
 		// verzetten naar de volgende kaart
 		strm >> cardName;
+		if (cardName != "EndCharacterCards") {
+			strm >> beenStolen;
+			strm >> isAlive;
+			strm >> isVisible;
+		}
 	}
 }
 
@@ -832,6 +880,62 @@ void Game::ClaimPlayerFieldCards(istream& strm, shared_ptr<Player> player) {
 
 		// verzetten naar de volgende kaart
 		strm >> cardName;
+	}
+}
+
+void Game::FillOnTableDeck(istream& strm) {
+	string omschrijving;
+	strm >> omschrijving;
+	string cardName;
+	bool beenStolen;
+	bool isAlive;
+	bool isVisible;
+	strm >> cardName;
+	strm >> beenStolen;
+	strm >> isAlive;
+	strm >> isVisible;
+	// door alle kaarten van een speler in de save file loopen
+	while (cardName != "EndOnTableDeck") {
+
+		bool found = false;
+
+		// door alle beschikbare kaarten loopen en reserveren.
+		//for (size_t b = 0; b < this->charactersDeck.size(); b++)
+		//{
+		for (int i = 1; i <= CharacterType::WARLORD; i++)
+		{
+			if (allCharacters[static_cast<CharacterType>(i)]->get_name() == cardName) {
+				found = true;
+				// reserveren
+				shared_ptr<CharacterCard> card = dynamic_pointer_cast<CharacterCard>(allCharacters[static_cast<CharacterType>(i)]);
+				card->set_beenStolen(beenStolen);
+				card->set_alive(isAlive);
+				card->set_visible(isVisible);
+
+				onTableDeck.add_Card(card);
+				//contains
+				if (std::find(this->charactersDeck.deck.begin(), this->charactersDeck.deck.end(), card) != this->charactersDeck.deck.end()) {
+					this->charactersDeck.remove_Card(card);
+				}
+
+				break;
+			}
+			//charactersDeck.add_Card(allCharacters[static_cast<CharacterType>(i)]);
+		}
+			
+		//}
+		// Kaart is niet gevonden. melding geven.
+		if (!found) {
+			throw exception("Invalid save file. One of the building cards is either already taken or does not excist.");
+		}
+
+		// verzetten naar de volgende kaart
+		strm >> cardName;
+		if (cardName != "EndOnTableDeck") {
+			strm >> beenStolen;
+			strm >> isAlive;
+			strm >> isVisible;
+		}
 	}
 }
 

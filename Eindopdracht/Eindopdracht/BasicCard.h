@@ -12,6 +12,7 @@ class BasicCard
 public:
 	BasicCard(std::string name, CharacterType type = CharacterType::NONE);
 	virtual void execute(Game game) = 0;
+	virtual ostream& data(ostream& strm) const = 0;
 	virtual string print() const = 0;
 	virtual ~BasicCard() = 0;
 
@@ -28,7 +29,7 @@ public:
 
 	friend ostream& operator<<(ostream& strm, const BasicCard& card) {
 		strm << card.get_name();
-
+		card.data(strm);
 		return strm;
 	}
 

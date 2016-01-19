@@ -1,45 +1,115 @@
 GameIsPlaying: 1
 firstpart: 0
-secondpart: 0
+secondpart: 1
 specialpart: 1
-CurrentPlayer: q
+CurrentPlayer: eerste
 GameStatus: Playing
-PlayerCount: 2
+PlayerCount: 3
+GameCharIndex: 5
+Charselectindex: 0
+Charcount: 6
+Picking: 0
+SelectCard: 0
+ThrowCard: 0
+First: 1
 BeginPlayer:
-q
-3
+derde
+4
 0
 1
 0
 BuildingCards
-Castle
-Temple
+Workshop
+Dungeon
 MagiciansSchool
+Church
 EndBuildingCards
-CharacterCards
-Merchant
-Assasin
-EndCharacterCards
 PlayerField
-Cathedral
 EndPlayerField
+CharacterCards
+King
+0
+1
+1
+Merchant
+0
+1
+0
+EndCharacterCards
 :EndPlayer
 BeginPlayer:
-p
-2
+tweede
+3
 0
 0
 0
 BuildingCards
-Estate
-Monastery
-Dragonsgate
-Workshop
+Market
+Library
+Stores
 EndBuildingCards
+PlayerField
+Estate
+EndPlayerField
 CharacterCards
-Bishop
 Thief
+0
+1
+1
+Assasin
+0
+1
+1
 EndCharacterCards
+:EndPlayer
+BeginPlayer:
+eerste
+4
+0
+0
+0
+BuildingCards
+TownHall
+Stronghold
+Port
+Dragonsgate
+EndBuildingCards
 PlayerField
 EndPlayerField
+CharacterCards
+Architect
+0
+1
+0
+Bishop
+0
+1
+1
+EndCharacterCards
 :EndPlayer
+OnTableDeck
+Warlord
+0
+1
+0
+Magician
+0
+1
+0
+Assasin
+0
+1
+1
+Thief
+0
+1
+1
+King
+0
+1
+1
+Bishop
+0
+1
+1
+EndOnTableDeck

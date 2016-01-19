@@ -54,8 +54,9 @@ public:
 		strm << player.firstToEight << endl;
 
 		strm << "BuildingCards" << endl << player.buildingCards << "EndBuildingCards" << endl;
-		strm << "CharacterCards" << endl << player.characterCards << "EndCharacterCards" << endl;
 		strm << "PlayerField" << endl << player.playerField << "EndPlayerField" << endl;
+		strm << "CharacterCards" << endl << player.characterCards << "EndCharacterCards" << endl;
+		
 
 		return strm;
 	}

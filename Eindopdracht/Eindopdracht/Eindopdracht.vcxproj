@@ -167,6 +167,7 @@
     <ClInclude Include="MerchantCard.h" />
     <ClInclude Include="Obversatorium.h" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="Sync_queue.h" />
     <ClInclude Include="ThiefCard.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="MerchantCard.cpp" />
     <ClCompile Include="Obversatorium.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="ThiefCard.cpp" />
     <ClCompile Include="throw.cpp" />

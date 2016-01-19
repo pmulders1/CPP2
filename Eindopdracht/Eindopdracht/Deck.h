@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Random.h"
 #include "BasicCard.h"
 #include <memory>
 #include <algorithm>
@@ -7,7 +8,7 @@ class Deck
 {
 public:
 	Deck();
-	void shuffle() { random_shuffle(deck.begin(), deck.end()); }
+	void shuffle() { std::shuffle(deck.begin(), deck.end(), Random::Instance()->generator); }
 	void add_Card(shared_ptr<BasicCard> card) { this->deck.push_back(card); }
 	void remove_Card(int index) { this->deck.erase(this->deck.begin() + index); }
 	void remove_Card(shared_ptr<BasicCard> card) { 
